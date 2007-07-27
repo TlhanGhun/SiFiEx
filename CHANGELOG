@@ -1,0 +1,19 @@
+0.1-Beta1
+  - Included all translations in the sourcecode
+  - Added english (en) and german (de) translations
+
+0.1-Alpha2
+Mail:
+  - Successfull sending of mail will be now reported to the user
+  - Reformatted the text in the E-Mail
+  - Link to file should now work correctly
+
+General:
+  - Extracted functions to own file calles "functions.php"
+  - created a config.php.templ to avoid overwriting changed settings by user in there owen config.php. If at startup no config.php is found the template will be copied to set the defaults
+
+Translations:
+  - new "firstStart"-text is displayed when default configuration has been created because of first time starting SiFiEx
+
+0.1-Alpha1
+First published version to give a first impression of upcoming release

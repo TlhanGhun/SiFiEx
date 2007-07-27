@@ -1,0 +1,87 @@
+h1 {
+  color:red;
+}
+
+div {
+}
+
+#uploadForm {
+  float:right;
+  width:19em;
+  background-color:#bbb;
+  border:1px solid black;
+}
+
+#messageBox {
+  overflow:hidden;
+  float:left;
+  width:12em;
+}
+
+#files {
+  margin-left:13em;
+  margin-right:20em;
+}
+
+#faq {
+  clear:left;
+  margin-top:2em;
+}
+
+#warning {
+  background-color:#f55;
+  border:1px solid darkred;
+}
+#ongoing {
+  overflow:hidden;
+  background-color:#ff0;
+  border:1px dotted #aa0;
+} 
+
+#success {
+  overflow:hidden;
+  background-color:#0f0;
+  border:1px solid #0a0;
+} 
+
+#footer {
+  border-top:1px solid #aaa;
+  clear:both;
+  font-style:italic;
+  font-size:0.7em;
+}
+
+th {
+  background-color:#444;
+  color:#fff;
+}
+
+th a {
+  text-decoration:none;
+  color:#fff;
+}
+
+table {
+  border:3px solid black;
+}
+
+td {
+  padding:0.3em;
+}
+
+td form {
+  display:inline;
+}
+
+tr {
+  border-bottom:1px solid black;
+}  
+
+tr.even {
+  background-color:#fff;
+}
+
+tr.odd {
+  background-color:#ddd;
+}
+
