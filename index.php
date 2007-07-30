@@ -92,6 +92,7 @@
           <li><?php echo $lang['uploadStart']; ?>
             <input type="submit" name="doUpload" value="Import" />
           </li>
+          <li><?php echo $lang['uploadBePatient']; ?></li>
         </ol>
         <p><?php echo $lang['uploadMaxSize']; echo getMaximumUploadSize(); ?></p>
       </form>

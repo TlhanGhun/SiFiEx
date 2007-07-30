@@ -13,6 +13,7 @@
     uploadInformMail	=> "M&ouml;chten Sie jemanden informieren? Wenn ja geben Sie bitte eine E-Mail-Adresse an: ",
     uploadMaxSize	=> "Max. Dateigr&ouml;&szlig;e: ",
     uploadStart		=> "Start: ",
+    uploadBePatient	=> "Geduld...",
     uploading		=> "Die Datei wird hochgeladen...",
     uploadError		=> "Beim hochladen ist ein Fehler aufgetrten - bitte versuchen Sie es erneut oder fragen Sie den Adminstrator dieser Seite.",
     uploadSuccess	=> "Die Datei wurde erfolgreich hochgeladen",
