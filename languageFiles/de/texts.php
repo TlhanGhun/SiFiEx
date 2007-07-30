@@ -7,6 +7,7 @@
     no			=> "Nein",
 
     ### Upload of file
+    uploadHeading	=> "Neue Datei hochladen",
     uploadChooseFile	=> "Bitte w&auml;hlen Sie eine Datei von Ihrer Festplatte aus: ",
     uploadHideSuffix	=> "M&ouml;chten Sie die Endung verbergen (siehe FAQ)?",
     uploadInformMail	=> "M&ouml;chten Sie jemanden informieren? Wenn ja geben Sie bitte eine E-Mail-Adresse an: ",

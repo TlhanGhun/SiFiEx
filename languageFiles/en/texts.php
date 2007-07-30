@@ -7,6 +7,7 @@
     no			=> "No",
 
     ### Upload of file
+    uploadHeading	=> "Upload new file",
     uploadChooseFile	=> "Please choose a file from your local harddisc:",
     uploadHideSuffix	=> "Do you want to hide the suffix (see FAQ)?",
     uploadInformMail	=> "Do you want to inform someone of the upload? If so enter e-mail-adress",
