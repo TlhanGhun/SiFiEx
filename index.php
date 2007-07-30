@@ -93,6 +93,7 @@
             <input type="submit" name="doUpload" value="Import" />
           </li>
         </ol>
+        <p><?php echo $lang['uploadMaxSize']; echo getMaximumUploadSize(); ?></p>
       </form>
     </div>
     <div id="files">

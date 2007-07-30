@@ -1,6 +1,8 @@
 0.1-Beta1
   - Included all translations in the sourcecode
   - Added english (en) and german (de) translations
+  - Changed the size of the upload form to make it usable on "smaller" screens
+  - maximum file size for upload is now being displayed
 
 0.1-Alpha2
 Mail:

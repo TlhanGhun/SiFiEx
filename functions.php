@@ -1,5 +1,10 @@
 <?php
 
+function getMaximumUploadSize () {
+  return max(ini_get('post_max_size'),ini_get('upload_max_filesize')); 
+}
+
+
 function writeWarning($warnText) {
   echo "<div id=\"warning\">\n";
   echo "  <p>$warnText</p>\n";

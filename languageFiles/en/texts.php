@@ -12,6 +12,7 @@
     uploadHideSuffix	=> "Do you want to hide the suffix (see FAQ)?",
     uploadInformMail	=> "Do you want to inform someone of the upload? If so enter e-mail-adress",
     uploadStart		=> "Start upload: ",
+    uploadMaxSize	=> "Maximum file size: ",
     uploading		=> "The file is being uploaded...",
     uploadError		=> "An error occured during upload - please try again or ask the adminstrator of this site for help",
     uploadSuccess	=> "The file has been successfully uploaded",
