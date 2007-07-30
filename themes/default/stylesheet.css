@@ -7,7 +7,7 @@ div {
 
 #uploadForm {
   float:right;
-  width:19em;
+  width:13em;
   background-color:#bbb;
   border:1px solid black;
 }
@@ -20,12 +20,22 @@ div {
 
 #files {
   margin-left:13em;
-  margin-right:20em;
+  margin-right:14em;
 }
 
 #faq {
-  clear:left;
+  border:1px solid #444;
+  background-color:#ddd;
+  padding:0.5em;
+  clear:both;
   margin-top:2em;
+}
+
+#greeting {
+  border:1px dotted black;
+  background-color:#00f;
+  color:#fff;
+  font-weight:bold;
 }
 
 #warning {
