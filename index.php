@@ -76,12 +76,12 @@
     ?>    
     </div>
     <div id="uploadForm">      
-      <h2>Upload new file</h2>
+      <h2><?php echo $lang['uploadHeading']; ?></h2>
       <form method="post" action="index.php" enctype="multipart/form-data">
         <ol>
           <li><?php echo $lang['uploadChooseFile']; ?>
             <br />
-            <input type="file" name="uploadPic" /></li>
+            <input type="file" name="uploadPic" size="4" /></li>
           <li><?php echo $lang['uploadHideSuffix']; ?>
             <input type="checkbox" name="hideSuffix" />
           </li>
