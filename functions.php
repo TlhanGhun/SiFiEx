@@ -1,7 +1,7 @@
 <?php
 
 function getMaximumUploadSize () {
-  return max(ini_get('post_max_size'),ini_get('upload_max_filesize')); 
+  return size_hum_read(min(sizeCpuReadable(ini_get('post_max_size')),sizeCpuReadable(ini_get('upload_max_filesize')))); 
 }
 
 
@@ -54,24 +54,26 @@ function size_hum_read($size){
   return substr($size,0,strpos($size,'.')+4)." ".$iec[$i];
 }
 
-function detectSSL(){
-
-if($_SERVER["https"] == "on"){
-
-return "https";
-
-} elseif ($_SERVER["https"] == 1){
-
-return "https";
-
-} elseif ($_SERVER['SERVER_PORT'] == 443) {
-
-return "https";
-
-} else {
-
-return "http";
-
+function sizeCpuReadable($size) {
+  if (preg_match('/K$/', $size)) {
+    return $size * 1024;
+  } elseif (preg_match('/M$/', $size)) {
+    return $size * 1024 * 1024;
+  } elseif (preg_match('/G$/', $size)) {
+    return $size * 1024 * 1024 * 1024;
+  } else {
+    return "doof";
+  }
 }
 
+function detectSSL(){
+  if($_SERVER["https"] == "on"){
+    return "https";
+  } elseif ($_SERVER["https"] == 1){
+    return "https";
+  } elseif ($_SERVER['SERVER_PORT'] == 443) {
+    return "https";
+  } else {
+    return "http";
+  }
 } 
