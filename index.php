@@ -1,7 +1,10 @@
 <?php 
   if(!file_exists("config.php")) {
-    copy("config.php.templ", "config.php");
-    $firstStart = TRUE;
+    if (copy("config.php.templ", "config.php")) {
+      $firstStart = TRUE;
+    } else {
+      echo "<strong>Sorry, I was unable to create the default configuration for you. Please copy manually the file called config.php.templ to config.php in the folder where you installed SiFiEx.</strong>. It looks like I didn't have enough rights to write this file for you...";
+    }
   }
   require_once("functions.php");
   require_once("config.php");
