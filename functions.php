@@ -4,7 +4,6 @@ function getMaximumUploadSize () {
   return size_hum_read(min(sizeCpuReadable(ini_get('post_max_size')),sizeCpuReadable(ini_get('upload_max_filesize')))); 
 }
 
-
 function writeWarning($warnText) {
   echo "<div id=\"warning\">\n";
   echo "  <p>$warnText</p>\n";
@@ -44,6 +43,7 @@ function sendMail($receipient, $fileName, $conf, $lang) {
 
 #   echo "<pre>".$header."\n\n".$body."</pre>\n";
 }
+
 function size_hum_read($size){
   $i=0;
   $iec = array("Byte", "KByte", "MByte", "GByte", "TByte", "PByte", "EByte", "ZByte", "YByte");
@@ -62,7 +62,7 @@ function sizeCpuReadable($size) {
   } elseif (preg_match('/G$/', $size)) {
     return $size * 1024 * 1024 * 1024;
   } else {
-    return "doof";
+    return $size;
   }
 }
 
