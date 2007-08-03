@@ -5,6 +5,23 @@ h1 {
 div {
 }
 
+h1 {
+  height:75px;
+  line-height:75px;
+  font-wight:bold;
+  font-size:30px;
+  padding-left:120px;
+  text-decoration:none;
+  color:black; 
+  background-image:url(images/SiFiExLogo.png);
+  background-repeat:no-repeat;
+}
+
+h1 a {
+  text-decoration:none;
+  color:black;
+}
+
 #uploadForm {
   float:right;
   width:13em;

@@ -18,11 +18,12 @@
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
     <title>SiFiEx - Simple File Exchange <?php echo $config['version']; ?></title>
     <meta name="generator" content="Sven Walther" />
+    <link rel="Shortcut Icon" type="image/x-icon" href="favicon.ico" />
     <link href="<?php echo "themes/".$config['theme']."/stylesheet.css"; ?>" rel="stylesheet" type="text/css" />
   </head>
   <body>
     <div id="logoHeader">
-      <h1><a href="">SiFiEx</a></h1>
+      <h1><a href="">Simple File Exchange <?php echo $config['version']; ?></a></h1>
     </div>
     <div id="messageBox">
 <?php

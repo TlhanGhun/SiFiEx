@@ -3,6 +3,8 @@
   - changed display of maximum allowed file size to be more human readable
   - added the check if at first startup the config.php has been 
     succesfully created
+  - default theme now has a nice (hopefully...) logo
+  - included a favicon with the new logo
 
 0.1-Beta1
   - Included all translations in the sourcecode
