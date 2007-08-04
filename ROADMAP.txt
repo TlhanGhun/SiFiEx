@@ -1,0 +1,25 @@
+0.1
+First release, basic functions
+Themes available
+Translations german / english available
+
+0.1.1
+Fine tuning for smaller screen resolutions
+Clean up styles for themes
+
+0.1.2
+Documentation for themes and translations
+
+0.2
+Remail link
+Rename files
+
+0.3
+Security, security, security
+
+0.4
+Upload progess bar (JavaScript)
+
+>=0.5
+we will see
+
