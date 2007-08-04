@@ -84,26 +84,26 @@
       <h2><?php echo $lang['uploadHeading']; ?></h2>
       <form method="post" action="index.php" enctype="multipart/form-data">
         <ol>
-          <li><?php echo $lang['uploadChooseFile']; ?>
+          <li id="chooseFile"><?php echo $lang['uploadChooseFile']; ?>
             <br />
             <input type="file" name="uploadPic" size="4" /></li>
-          <li><?php echo $lang['uploadHideSuffix']; ?>
+          <li id="hideSuffix"><?php echo $lang['uploadHideSuffix']; ?>
             <input type="checkbox" name="hideSuffix" />
           </li>
-	  <li><?php echo $lang['uploadInformMail']; ?>
+	  <li id="informMail"><?php echo $lang['uploadInformMail']; ?>
             <br />
             <input name="informMail" />
           </li>
-          <li><?php echo $lang['uploadStart']; ?>
+          <li id="startButton"><?php echo $lang['uploadStart']; ?>
             <input type="submit" name="doUpload" value="Import" />
           </li>
-          <li><?php echo $lang['uploadBePatient']; ?></li>
+          <li id="bePatient"><?php echo $lang['uploadBePatient']; ?></li>
         </ol>
-        <p><?php echo $lang['uploadMaxSize']; echo getMaximumUploadSize(); ?></p>
+        <p id="maxFileSize"><?php echo $lang['uploadMaxSize']; echo getMaximumUploadSize(); ?></p>
       </form>
     </div>
     <div id="files">
-      <table>
+      <table id="listOfFiles">
         <tr>
           <th>
             <?php echo $lang['listName']; ?> <a href="?sort=NameUp">&uarr;</a> <a href="?sort=NameDown">&darr;</a>
@@ -130,9 +130,18 @@ while ($file = readdir ($handle)) {
 closedir($handle);
 natcasesort($images);
 if ($HTTP_GET_VARS['sort']=="NameUp") {
-$images = array_reverse($images);
+  $images = array_reverse($images);
 }
 	reset($images);
+	if (count($images) == 0) {
+	 ?>
+	  <tr>
+	    <td class="noFilesAvailable" colspan="4">
+	      <?php echo $lang['noFilesAvailable']; ?>
+	    </td>
+	  </tr>
+<?php
+        }
 	while (list(, $key) = each ($images)) {
 		if ($colorChanger > 0) {
 			$class="odd";
@@ -142,29 +151,29 @@ $images = array_reverse($images);
 		$colorChanger =-1 * $colorChanger;
         ?>        
         <tr class="<?php echo $class ?>">
-          <td>
+          <td class="fileName">
             <a href="files/<?php echo $key; ?>">
               <?php echo $key; ?></a>
           </td>
-          <td>
+          <td class="fileDate">
             <?php echo date ($config['dateFormat'], filemtime("files/$key")); ?>
           </td>
-          <td>
+          <td class="fileSize">
             <?php echo size_hum_read(filesize("files/$key")); ?>
           </td>
-          <td>
+          <td class="actions">
             <form method="post" action="<?php echo $_SELF?>">
-              <input type="submit" name="submit" value="<?php echo $lang['listDelete']; ?>" />
+              <input class="deleteButton" type="submit" name="submit" value="<?php echo $lang['listDelete']; ?>" />
               <input type="hidden" name="delete" value="first" />
               <input type="hidden" name="name" value="<?php echo $key ?>" />
             </form>
             <!--          <form method="post" action="<?php echo $_SELF?>">
-            <input type="submit" name="submit" value="<?php echo $lang['listRename']; ?>" />
+            <input class="renameButton" type="submit" name="submit" value="<?php echo $lang['listRename']; ?>" />
             <input type="hidden" name="name" value="<?php echo $key ?>">
             </form>
             <form method="post" action="<?php echo $_SELF?>">
-            <input type="submit" name="submit" value="<?php echo $lang['listMail']; ?>" />
-            <input type="hidden" name="name" value="<?php echo $key ?>">
+              <input class="mailButton" type="submit" name="submit" value="<?php echo $lang['listMail']; ?>" />
+              <input type="hidden" name="name" value="<?php echo $key ?>">
             </form> -->
           </td>
         </tr>        

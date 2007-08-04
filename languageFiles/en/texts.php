@@ -26,6 +26,7 @@
     listDelete		=> "Delete",
     listRename		=> "Rename",
     listMail		=> "Mail link",
+    noFilesAvailable	=> "There are no files uploaded right now",
 
     ### Delete file
     deleteSure		=> "Are you sure to delete this file?",

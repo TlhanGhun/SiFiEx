@@ -1,3 +1,10 @@
+0.1.1
+  - added many CSS-classes and ids for flexible themes
+  - if no file is in the upload directory a hint is displayed
+
+0.1
+  - included a roadmap
+
 0.1-Beta2
   - Fixed a bug in the display of the maximum allowed file size
   - changed display of maximum allowed file size to be more human readable

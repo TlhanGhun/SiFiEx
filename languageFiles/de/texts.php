@@ -26,6 +26,7 @@
     listDelete		=> "L&ouml;schen",
     listRename		=> "Rename",
     listMail		=> "Link verschicken",
+    noFilesAvailable	=> "Aktuell keine Dateien vorhanden",
 
     ### Delete file
     deleteSure		=> "Wollen Sie diese Datei wirklich l&ouml;schen?",
