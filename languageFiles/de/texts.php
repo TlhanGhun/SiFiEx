@@ -7,6 +7,8 @@
     no			=> "Nein",
 
     ### Upload of file
+    unExpandUpload	=> "Abbrechen",
+    uploadExpand	=> "Neue Datei hochladen",
     uploadHeading	=> "Neue Datei hochladen",
     uploadChooseFile	=> "Bitte w&auml;hlen Sie eine Datei von Ihrer Festplatte aus: ",
     uploadHideSuffix	=> "M&ouml;chten Sie die Endung verbergen (siehe FAQ)?",

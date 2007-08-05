@@ -1,8 +1,11 @@
 0.1.1
-  - added many CSS-classes and ids for flexible themes
+  - added many CSS-classes and ids for flexible themes - every
+    single part of SiFiEx can now exclusivly been styled
   - if no file is in the upload directory a hint is displayed
   - display of filenames can be shortened if they are to long for a nice display - see new config parameter
     Example: veryVeryVeryLongFilename becomes something like veryV..ename
+  - upload form is now not always visble but only after clicking
+    on a buttom (see also new translations)
 
 new entries in configuration
  o maxFilenameLength: maximum length of filename to be displayed
@@ -11,6 +14,8 @@ new entries in configuration
 
 new entries for translations:
  o noFilesAvailable: shown if no files are in the upload directory
+ o unExpandUpload: Cancel upload form
+ o expandUpload: open upload form
 
 0.1
   - included a roadmap

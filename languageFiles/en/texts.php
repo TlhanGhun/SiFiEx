@@ -7,6 +7,8 @@
     no			=> "No",
 
     ### Upload of file
+    unExpandUpload	=> "Camcel upload",
+    uploadExpand	=> "Upload new file",
     uploadHeading	=> "Upload new file",
     uploadChooseFile	=> "Please choose a file from your local harddisc:",
     uploadHideSuffix	=> "Do you want to hide the suffix (see FAQ)?",

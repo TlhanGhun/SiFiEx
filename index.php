@@ -25,18 +25,24 @@
     <div id="logoHeader">
       <h1><a href="">Simple File Exchange <?php echo $config['version']; ?></a></h1>
     </div>
+    <form id="expandUploadForm" action="<?php echo $_SELF; ?>" method="post">
+      <?php if ($HTTP_POST_VARS['expandUploadSubmit']) {
+      ?>
+      <input type="submit" id="unExpandUpload" name="unExpandUpload" value="<?php echo $lang['unExpandUpload']."&nbsp;&uarr;"; ?>" />
+      <?php } else { ?>
+      <input type="submit" id="expandUploadSubmit" name="expandUploadSubmit" value="<?php echo $lang['uploadExpand']."&nbsp;&darr;"; ?>" />
+      <?php } ?>
+    </form>
     <div id="messageBox">
 <?php
   if ($firstStart) {
     writeSuccess($lang['firstStart']);
   }
-  if (!$HTTP_POST_VARS && !$HTTP_GET_VARS) {
 ?>
       <div id="greeting">
         <?php echo $lang['greeting']; ?>
       </div>
 <?php
-  }
   if ($HTTP_POST_VARS['doUpload'] != "") {
     writeOngoing($lang['uploading']);
     $fileName = $_FILES['uploadPic']['name'];
@@ -80,6 +86,9 @@
  
     ?>    
     </div>
+    <?php
+      if ($HTTP_POST_VARS['expandUploadSubmit']) {
+    ?>
     <div id="uploadForm">      
       <h2><?php echo $lang['uploadHeading']; ?></h2>
       <form method="post" action="index.php" enctype="multipart/form-data">
@@ -102,6 +111,9 @@
         <p id="maxFileSize"><?php echo $lang['uploadMaxSize']; echo getMaximumUploadSize(); ?></p>
       </form>
     </div>
+    <?php
+      } else {
+    ?>
     <div id="files">
       <table id="listOfFiles">
         <tr>
@@ -181,6 +193,9 @@ if ($HTTP_GET_VARS['sort']=="NameUp") {
   }
         ?>
       </table>
+      <?php
+        }
+      ?>
     </div>
     <div id="faq">
       <h2>FAQ</h2>
