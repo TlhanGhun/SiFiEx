@@ -1,5 +1,6 @@
 body {
   padding:0.5em;
+  background-image:url(images/bg.gif);
 }
 h1 {
   color:red;
