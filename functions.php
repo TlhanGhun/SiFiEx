@@ -1,5 +1,15 @@
 <?php
 
+function displayFilename($filename, $length) {
+  if($length < strlen($filename)) {
+    $leftPart = substr($filename, 0, intval($length/2-1));
+    $rightPart = substr($filename, intval(strlen($filename) - ($length/2 -1)));
+    return $leftPart."..".$rightPart;
+  } else {
+    return $filename;
+  }
+}
+
 function getMaximumUploadSize () {
   return size_hum_read(min(sizeCpuReadable(ini_get('post_max_size')),sizeCpuReadable(ini_get('upload_max_filesize')))); 
 }

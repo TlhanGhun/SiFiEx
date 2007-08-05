@@ -153,7 +153,7 @@ if ($HTTP_GET_VARS['sort']=="NameUp") {
         <tr class="<?php echo $class ?>">
           <td class="fileName">
             <a href="files/<?php echo $key; ?>">
-              <?php echo $key; ?></a>
+              <?php echo displayFileName($key, $config['maxFilenameLength']); ?></a>
           </td>
           <td class="fileDate">
             <?php echo date ($config['dateFormat'], filemtime("files/$key")); ?>

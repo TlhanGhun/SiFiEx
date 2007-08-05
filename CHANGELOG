@@ -2,6 +2,9 @@
   - added many CSS-classes and ids for flexible themes
   - if no file is in the upload directory a hint is displayed
 
+new entries for translations:
+ o noFilesAvailable: shown if no files are in the upload directory
+
 0.1
   - included a roadmap
 
