@@ -152,7 +152,7 @@ if ($HTTP_GET_VARS['sort']=="NameUp") {
         ?>        
         <tr class="<?php echo $class ?>">
           <td class="fileName">
-            <a href="files/<?php echo $key; ?>">
+            <a href="files/<?php echo $key; ?>" title="<?php echo $key; ?>">
               <?php echo displayFileName($key, $config['maxFilenameLength']); ?></a>
           </td>
           <td class="fileDate">

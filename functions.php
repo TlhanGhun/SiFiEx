@@ -1,7 +1,7 @@
 <?php
 
 function displayFilename($filename, $length) {
-  if($length < strlen($filename)) {
+  if(($length < strlen($filename)) && $length) {
     $leftPart = substr($filename, 0, intval($length/2-1));
     $rightPart = substr($filename, intval(strlen($filename) - ($length/2 -1)));
     return $leftPart."..".$rightPart;

@@ -1,6 +1,13 @@
 0.1.1
   - added many CSS-classes and ids for flexible themes
   - if no file is in the upload directory a hint is displayed
+  - display of filenames can be shortened if they are to long for a nice display - see new config parameter
+    Example: veryVeryVeryLongFilename becomes something like veryV..ename
+
+new entries in configuration
+ o maxFilenameLength: maximum length of filename to be displayed
+   before it is cutted. Leave 0 to not cut the filename at all
+   Just use for the display - the filename itself won't be altered
 
 new entries for translations:
  o noFilesAvailable: shown if no files are in the upload directory
