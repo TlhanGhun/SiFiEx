@@ -22,8 +22,11 @@ Thumbnail of images etc.
 Security, security, security
 
 0.4
+Users can choose language and theme by themself
+
+0.5
 Upload progess bar (JavaScript)
 
->=0.5
+>=0.6
 we will see
 
