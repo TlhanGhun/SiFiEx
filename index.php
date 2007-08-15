@@ -1,11 +1,9 @@
 <?php 
-  if(!file_exists("config.php")) {
-    if (copy("config.php.templ", "config.php")) {
-      $firstStart = TRUE;
-    } else {
-      echo "<br /><br /><br /><div style=\"background-color:red;border:1px solid black;padding:1em;\"><strong>Sorry, I was unable to create the default configuration for you. Please copy manually the file called config.php.templ to config.php in the folder where you installed SiFiEx.</strong>. It looks like I didn't have enough rights to write this file for you...<br /><br />SiFiEx</div>";
-     die();
-    }
+  if(!file_exists("config.php") || !is_writable("files/")) {
+    require("setup/setup.php");
+    $initialSetup = new setup;
+    $initialSetup->writeHtmlHeader();
+    $initialSetup->writeAnalysis();
   }
   require_once("functions.php");
   require_once("config.php");

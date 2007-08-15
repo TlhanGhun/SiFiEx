@@ -1,0 +1,16 @@
+div {
+  border:1px solid black;
+  background-color:#eee;
+  padding:1em;
+  margin-bottom:2em;
+}
+
+.OK {
+  font-weight:bold;
+  color:green;
+}
+
+.NotOK {
+  font-weight:bold;
+  color:red;
+}
