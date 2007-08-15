@@ -7,7 +7,7 @@
 class setup {
   function writeAnalysis () {
     echo "<div id=\"setup\">\n";
-    echo "<img src=\"themes/default/images/SiFiExLogo.png\" />\n";
+    echo "<h1>Installation</h1>\n";
     echo "<p>Welcome to the firsttime setup of SiFiEx on this machine. To be able to share files SiFiEx will need some writing rights on your webspace. I will check this for you right now...</p>\n";
     echo "  <p>Checking if I'm allowed to write the initial configuration: ";
     if ($this->checkWritableConfig ()) {
@@ -35,6 +35,7 @@ class setup {
       echo "</body></html>";
       die();
    } else {
+      echo "<p>Sorry, I don't have enough rights to finish the installation for you. Please read the following paragraphs to change the permissions.</p>\n";
       echo "</div>\n";
       $this->fixProblems($this->configProblem, $this->filesProblem);
     }
@@ -49,7 +50,12 @@ class setup {
   }
 
   function fixProblems($files, $config) {
-    echo "<div style=\"background-color:red;\"><strong>Sorry, I was unable to create the default configuration for you. Please copy manually the file called config.php.templ to config.php in the folder where you installed SiFiEx.</strong>. It looks like I didn't have enough rights to write this file for you...<br /><br />SiFiEx</div>";
+    echo "<div id=\"describeSetupProblems\">\n";
+    echo "<h1>Howto make needed adjustments</h1>\n";
+    echo "</div>\n";
+    echo "<div id=\"fixSetupProblems\">\n";
+    readfile("setup/examplesFTP.html");
+    echo "</div>\n";
     echo "</body></html>";
     die();
   }
