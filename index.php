@@ -1,11 +1,17 @@
 <?php 
+  require_once("functions.php");
   if(!file_exists("config.php") || !is_writable("files/")) {
     require("setup/setup.php");
-    $initialSetup = new setup;
-    $initialSetup->writeHtmlHeader();
-    $initialSetup->writeAnalysis();
+    if ($HTTP_POST_VARS['doFtpChanges']) {
+      $tryUsingFtp = new setup;
+      $tryUsingFtp->writeHtmlHeader();
+      $tryUsingFtp->writeUsingFtp($HTTP_POST_VARS);
+    } else {
+      $initialSetup = new setup;
+      $initialSetup->writeHtmlHeader();
+      $initialSetup->writeAnalysis();
+    }
   }
-  require_once("functions.php");
   require_once("config.php");
   require_once("languageFiles/".$config['language']."/texts.php");
 ?>

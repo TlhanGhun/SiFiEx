@@ -1,3 +1,7 @@
+0.2-Beta2
+  - Added the possibility to change permissions directly in the setup
+    using FTP in SiFiEx itself
+
 0.2-Beta1
   - Completely rewritten setup process
     o on first start a special setup page is displayed

@@ -87,3 +87,15 @@ function detectSSL(){
     return "http";
   }
 } 
+
+	
+
+if (!function_exists('ftp_chmod')) {
+  function ftp__chmod($ftpstream,$chmod,$file) {
+    $old=error_reporting();
+    #error_reporting(0);
+    $result=ftp_site($ftpstream, "CHMOD ".$chmod." ".$file);
+    #error_reporting($old);
+    return $result;
+  }
+}

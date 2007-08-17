@@ -69,6 +69,9 @@ class setup {
       echo "<p>Background: On the webservers of mass hosters normally the user uploading files via FTP (the way you most probably installed SiFiEx) and the user running the PHP-scripts are not equal. So most of the times on such servers the PHP-script is not allowed to upload files to the files directory until you change those permissions to make this folder writable for the PHP-user.</p>\n";
     }
     echo "</div>\n";
+    echo "<div id=\"setupViaFtp\">\n";
+    $this->createFtpForm($this->filesProblem, $this->configProblem);
+    echo "</div>\n";
     echo "<div id=\"fixSetupProblems\">\n";
     readfile("setup/examplesFTP.html");
     echo "</div>\n";
@@ -88,6 +91,73 @@ class setup {
   function checkWritableFilesFolder () {
     # return FALSE;
     return(is_writable("./files/"));
+  }
+
+  function createFtpForm ($files, $config) {
+    echo "<h1>Automatical change of needed adjustments</h1>\n";
+    echo "<p>With the following form you can SiFiEx change all needed parameters for you automatically. Just enter the connection data to your FTP-Server and SiFiEx will make the rest for you. If you don't like to enter your connection data into this formular you can also make the changes by hand - see below howto make this.</p>\n";
+    echo "<form id=\"ftpForm\" method=\"post\" action=\"$PHP_SELF\">\n";
+    echo "  Your FTP-Server: <input name=\"ftpHost\" id=\"ftpHost\" /><br />\n";
+    echo "  Your path to SiFiEx: <input name=\"ftpPath\" id=\"ftpPath\" value=\"SiFiEx/\" /><br />\n";
+    echo "  Your FTP-User: <input name=\"ftpUser\" id=\"ftpUser\" /><br />\n";
+    echo "  Your FTP-Password: <input name=\"ftpPassword\" type=\"password\" id=\"ftpPassword\" /><br />\n";
+    if ($files) {
+      echo "  <input type=\"hidden\" name=\"files\" value=\"TRUE\" />";
+    }
+    if ($config) {
+      echo "  <input type=\"hidden\" name=\"config\" value=\"$config\" />";
+    }
+    echo "  <input type=\"submit\" name=\"doFtpChanges\" value=\"Complete installation\" />\n";
+    echo "</form>\n";
+  }
+  function writeUsingFtp ($vars) {
+    echo "<div id=\"tryingFtp\">\n";
+    echo "<h1>Automatic installation</h1>\n";
+    echo "<p>Trying now to change everything for you.</p>\n";
+    echo "<ol>\n";
+    echo "  <li>Logging onto host ".$vars['ftpHost'].": ";
+    $this->outputSuccess($ch = ftp_connect($ftpHost));
+    echo "</li>\n";
+    echo "  <li>Logging in using user ".$vars['ftpUser']." and the supplied password: ";
+    $this->outputSuccess($lh = ftp_login($ch, $vars['ftpUser'], $vars['ftpPassword']));
+    echo "</li>\n";
+    if($vars['ftpPath'] != "") {
+      echo "  <li>Changing to your SiFiEx directory &quot;".$vars['ftpPath']."&quot;: ";
+      $this->outputSuccess(ftp_chdir($ch, $vars['ftpPath']));
+      echo "</li>\n";
+    }
+    if ($vars['files']) {
+      echo "<li>Changing now the permissions for the files-folder: ";
+      $this->outputSuccess(ftp_chmod($ch, 0777, "./files"));
+      echo "</li>\n";
+    }
+    if ($vars['config']) {
+      echo "<li>Creating now the default configuration: ";
+      $getFile = ftp_get($ch, "./files/temp.php", "./config.php.templ", FTP_ASCII);
+      $this->outputSuccess(ftp_put($ch, "./config.php", "./files/temp.php", FTP_ASCII));
+      $deleteFile = ftp_delete($ch, "./files/temp.php");
+      echo "</li>\n";
+    }
+
+    echo "  <li>Closing connection :";
+    $this->outputSuccess (ftp_quit($ch));
+    echo "</li>\n";
+
+    echo "</ol>\n";
+    if (!$this->success) {
+      echo "<p><strong>Sorry, I had some problems in the automatic installation. Maybe SiFiEx will work now (see following analysis) but if not please follow the documentation at bottom of this page to install SiFiEx manualy</strong></p>\n";
+    }
+    echo "</div>\n";
+    $this->writeAnalysis();
+  }
+
+  function outputSuccess ($value) {
+    if ($value) {
+      echo "<span class=\"OK\">OK</span>";
+    } else {
+      echo "<span class=\"NotOK\">NOT OK $value</span>";
+      $this->success = FALSE;
+    }
   }
 
   function writeNewConfig() {
