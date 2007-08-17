@@ -43,7 +43,7 @@
 <?php
   if ($HTTP_POST_VARS['doUpload'] != "") {
     writeOngoing($lang['uploading']);
-    $fileName = escapeshellcmd($_FILES['uploadPic']['name']);
+    $fileName = $_FILES['uploadPic']['name'];
     if ($HTTP_POST_VARS['hideSuffix'] != "") {
     	$fileName .= $config['hiddenSuffix'];
     }

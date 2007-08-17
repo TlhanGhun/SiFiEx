@@ -6,12 +6,14 @@
 1. Installation
 Just upload the extracted folder to your Webspace and make sure that the user running the PHP-Scripts is allowed to write and delete files in the included folder "files" and in the folder for SiFiEx.
 
+On first start SiFiEx checks all needed permissions and reports them to you.
+
 1.1 First time configuration
 You can change some configurations by editing config.php. config.php will be created right after the first time of accessing SiFiEx using a browser by copying config.php.templ to config.php. Of course you can also copy it in this way by yourself if you want to have a config.php before the first access to SiFiEx
 
 2. Maximum file size
-The maximum size of uploaded files depends on the size of your webspace (of course) and some settings in you php.ini.
-Check the values for "upload_max_filesize" and "post_max_size". The lower value will win. Example for 50MB:
+The maximum size of uploaded files depends on the size of your webspace (of course) and some settings in your php.ini.
+Check the values for "upload_max_filesize" and "post_max_size". The lower value will win (so if one parameter is 20M and the other is 50M the result will be 20M). Example for 50MB:
 
    upload_max_filesize = 50M
    post_max_size = 50M

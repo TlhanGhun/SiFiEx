@@ -1,3 +1,16 @@
+0.2-Beta1
+  - Completely rewritten setup process
+    o on first start a special setup page is displayed
+    o permissions on config.php and files-folder are checked and displayed
+    o if there are unsufficiant permissions a howto including examples
+      and screenshots is displayed
+ Known limitations:
+  - files with special characters in the name can cause problems
+
+ Upgrade from 0.1.1 to 0.2: Just copy the new files over the old installation
+  - if you want to have a look at the new setup: delete or rename your
+    config.php and it will be started on the next access to the start page
+
 0.1.1
   - added many CSS-classes and ids for flexible themes - every
     single part of SiFiEx can now exclusivly been styled
