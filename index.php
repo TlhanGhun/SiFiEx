@@ -142,7 +142,7 @@ $colorChanger=1;
 $images=array();
 $handle=opendir('files/');
 while ($file = readdir ($handle)) {
-  if ($file != "." && $file != ".." && $file!= ".htaccess") {
+  if ($file != "." && $file != ".." && $file!= ".htaccess" && $file != ".svn") {
     array_push($images, $file);
   }
 }
