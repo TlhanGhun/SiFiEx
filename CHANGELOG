@@ -1,6 +1,8 @@
-0.2
+0.2-Beta4
   - Some cleanup to the code
   - fixed a security issue (uploaded could be executed using PHP)
+  - fixed a very bad bug in the automatic FTP setup (didn't work in 
+    the old version at all - sorry for that)
 
 0.2-Beta3
   - Added a function to try to change the permissions using PHP-builtin chmod
