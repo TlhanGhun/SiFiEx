@@ -53,6 +53,9 @@ if ($HTTP_POST_VARS['doUpload'] != "") {
   if ($HTTP_POST_VARS['hideSuffix'] != "") {
     $fileName .= $config['hiddenSuffix'];
   }
+  if($fileName == ".htaccess") {
+    $fileName = "htaccess-Leading dot erased by SiFiEx";
+  }
   if (!move_uploaded_file($_FILES['uploadPic']['tmp_name'], "files/$fileName")) {
     writeWarning($lang['uploadError']);
   } else {
@@ -139,7 +142,7 @@ $colorChanger=1;
 $images=array();
 $handle=opendir('files/');
 while ($file = readdir ($handle)) {
-  if ($file != "." && $file != "..") {
+  if ($file != "." && $file != ".." && $file!= ".htaccess") {
     array_push($images, $file);
   }
 }
