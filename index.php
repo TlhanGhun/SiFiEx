@@ -1,19 +1,19 @@
 <?php 
-  require_once("functions.php");
-  if(!file_exists("config.php") || !is_writable("files/")) {
-    require("setup/setup.php");
-    if ($HTTP_POST_VARS['doFtpChanges']) {
-      $tryUsingFtp = new setup;
-      $tryUsingFtp->writeHtmlHeader();
-      $tryUsingFtp->writeUsingFtp($HTTP_POST_VARS);
-    } else {
-      $initialSetup = new setup;
-      $initialSetup->writeHtmlHeader();
-      $initialSetup->writeAnalysis();
-    }
+require_once("functions.php");
+if(!file_exists("config.php") || !is_writable("files/")) {
+  require("setup/setup.php");
+  if ($HTTP_POST_VARS['doFtpChanges']) {
+    $tryUsingFtp = new setup;
+    $tryUsingFtp->writeHtmlHeader();
+    $tryUsingFtp->writeUsingFtp($HTTP_POST_VARS);
+  } else {
+    $initialSetup = new setup;
+    $initialSetup->writeHtmlHeader();
+    $initialSetup->writeAnalysis();
   }
-  require_once("config.php");
-  require_once("languageFiles/".$config['language']."/texts.php");
+}
+require_once("config.php");
+require_once("languageFiles/".$config['language']."/texts.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
     "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
@@ -29,7 +29,7 @@
     <div id="logoHeader">
       <h1><a href="">Simple File Exchange <?php echo $config['version']; ?></a></h1>
     </div>
-    <form id="expandUploadForm" action="<?php echo $_SELF; ?>" method="post">
+    <form id="expandUploadForm" action="<?php echo $PHP_SELF; ?>" method="post">
       <?php if ($HTTP_POST_VARS['expandUploadSubmit']) {
       ?>
       <input type="submit" id="unExpandUpload" name="unExpandUpload" value="<?php echo $lang['unExpandUpload']."&nbsp;&uarr;"; ?>" />
@@ -39,32 +39,32 @@
     </form>
     <div id="messageBox">
 <?php
-  if ($firstStart) {
-    writeSuccess($lang['firstStart']);
-  }
+if ($firstStart) {
+  writeSuccess($lang['firstStart']);
+}
 ?>
       <div id="greeting">
         <?php echo $lang['greeting']; ?>
       </div>
 <?php
-  if ($HTTP_POST_VARS['doUpload'] != "") {
-    writeOngoing($lang['uploading']);
-    $fileName = $_FILES['uploadPic']['name'];
-    if ($HTTP_POST_VARS['hideSuffix'] != "") {
-    	$fileName .= $config['hiddenSuffix'];
+if ($HTTP_POST_VARS['doUpload'] != "") {
+  writeOngoing($lang['uploading']);
+  $fileName = $_FILES['uploadPic']['name'];
+  if ($HTTP_POST_VARS['hideSuffix'] != "") {
+    $fileName .= $config['hiddenSuffix'];
+  }
+  if (!move_uploaded_file($_FILES['uploadPic']['tmp_name'], "files/$fileName")) {
+    writeWarning($lang['uploadError']);
+  } else {
+    writeSuccess($lang['uploadSuccess']);
+    if ($HTTP_POST_VARS['informMail'] != "") {
+      sendMail($HTTP_POST_VARS['informMail'], $fileName, $config, $lang);
     }
-    if (!move_uploaded_file($_FILES['uploadPic']['tmp_name'], "files/$fileName")) {
-       writeWarning($lang['uploadError']);
-    } else {
-      writeSuccess($lang['uploadSuccess']);
-      if ($HTTP_POST_VARS['informMail'] != "") {
-        sendMail($HTTP_POST_VARS['informMail'], $fileName, $config, $lang);
-      }
-    }
-  } 
-  
-  if ($HTTP_POST_VARS['delete'] == "first") {
-    writeWarning($lang['deleteSure']);
+  }
+}
+
+if ($HTTP_POST_VARS['delete'] == "first") {
+  writeWarning($lang['deleteSure']);
       ?>
       <form method="post" action="index.php">
         <input type="submit" name="delete" value="<?php echo $lang['yes']; ?>" />
@@ -73,25 +73,25 @@
       </form>
     </div>
 <?php
-    }
-  
-  if ($HTTP_POST_VARS['delete'] == $lang['yes']) {
-    writeOngoing($lang['deleting']);
-    # first we have to be aware that some evil guy trys to delete files
-    # outside of our directory by deleting ".." and "/" in filename
-    $deleteFile=ereg_replace("\/","",$HTTP_POST_VARS['name']);
-    $deleteFile=(ereg_replace("\.\.","",$deleteFile));
-    if (@unlink("files/".$deleteFile)) {
-      writeSuccess($lang['deleteSuccess']);
-    } else {
-      writeWarning($lang['deleteError']);
-    }
-   }
- 
+}
+
+if ($HTTP_POST_VARS['delete'] == $lang['yes']) {
+  writeOngoing($lang['deleting']);
+  # first we have to be aware that some evil guy trys to delete files
+  # outside of our directory by deleting ".." and "/" in filename
+  $deleteFile=ereg_replace("\/","",$HTTP_POST_VARS['name']);
+  $deleteFile=(ereg_replace("\.\.","",$deleteFile));
+  if (@unlink("files/".$deleteFile)) {
+    writeSuccess($lang['deleteSuccess']);
+  } else {
+    writeWarning($lang['deleteError']);
+  }
+}
+
     ?>    
     </div>
     <?php
-      if ($HTTP_POST_VARS['expandUploadSubmit']) {
+    if ($HTTP_POST_VARS['expandUploadSubmit']) {
     ?>
     <div id="uploadForm">      
       <h2><?php echo $lang['uploadHeading']; ?></h2>
@@ -116,7 +116,7 @@
       </form>
     </div>
     <?php
-      } else {
+    } else {
     ?>
     <div id="files">
       <table id="listOfFiles">
@@ -137,19 +137,19 @@
 <?php
 $colorChanger=1;
 $images=array();
-$handle=opendir('files/'); 
-while ($file = readdir ($handle)) { 
-    if ($file != "." && $file != "..") {
-        array_push($images, $file); 
-    } 		
+$handle=opendir('files/');
+while ($file = readdir ($handle)) {
+  if ($file != "." && $file != "..") {
+    array_push($images, $file);
+  }
 }
 closedir($handle);
 natcasesort($images);
 if ($HTTP_GET_VARS['sort']=="NameUp") {
   $images = array_reverse($images);
 }
-	reset($images);
-	if (count($images) == 0) {
+reset($images);
+if (count($images) == 0) {
 	 ?>
 	  <tr>
 	    <td class="noFilesAvailable" colspan="4">
@@ -157,14 +157,14 @@ if ($HTTP_GET_VARS['sort']=="NameUp") {
 	    </td>
 	  </tr>
 <?php
-        }
-	while (list(, $key) = each ($images)) {
-		if ($colorChanger > 0) {
-			$class="odd";
-		} else {
-			$class="even";
-		}
-		$colorChanger =-1 * $colorChanger;
+}
+while (list(, $key) = each ($images)) {
+  if ($colorChanger > 0) {
+    $class="odd";
+  } else {
+    $class="even";
+  }
+  $colorChanger =-1 * $colorChanger;
         ?>        
         <tr class="<?php echo $class ?>">
           <td class="fileName">
@@ -194,11 +194,11 @@ if ($HTTP_GET_VARS['sort']=="NameUp") {
           </td>
         </tr>        
 <?php
-  }
+}
         ?>
       </table>
       <?php
-        }
+    }
       ?>
     </div>
     <div id="faq">

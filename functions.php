@@ -76,6 +76,13 @@ function sizeCpuReadable($size) {
 	}
 }
 
+function filePermissions($file, $octal = false) {
+	if(!file_exists($file)) return false;
+	$perms = fileperms($file);
+	$cut = $octal ? 2 : 3;
+	return substr(decoct($perms), $cut);
+}
+
 function detectSSL(){
 	if($_SERVER["https"] == "on"){
 		return "https";
@@ -94,6 +101,7 @@ function showResult ($value, $goodText, $badText) {
 	} else {
 		echo "<span class=\"NotOK\">".$badText."</span>";
 	}
+	return $value;
 }
 
 
