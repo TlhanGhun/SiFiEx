@@ -106,11 +106,7 @@ function showResult ($value, $goodText, $badText) {
 
 
 if (!function_exists('ftp_chmod')) {
-	function ftp_chmod($ftpstream,$chmod,$file) {
-		$old=error_reporting();
-		#error_reporting(0);
-		$result=ftp_site($ftpstream, "CHMOD ".$chmod." ".$file);
-		#error_reporting($old);
-		return $result;
-	}
+  function ftp_chmod($ftp_stream, $mode, $filename) {
+    return ftp_site($ftp_stream, sprintf('CHMOD %o %s', $mode, $filename));
+  }
 }

@@ -131,7 +131,7 @@ class setup {
     echo "<p>Trying now to change everything for you.</p>\n";
     echo "<ol>\n";
     echo "  <li>Logging onto host ".$vars['ftpHost'].": ";
-    $this->outputSuccess($ch = ftp_connect($ftpHost));
+    $this->outputSuccess($ch = ftp_connect($vars['ftpHost']));
     echo "</li>\n";
     echo "  <li>Logging in using user ".$vars['ftpUser']." and the supplied password: ";
     $this->outputSuccess($lh = ftp_login($ch, $vars['ftpUser'], $vars['ftpPassword']));
@@ -144,6 +144,7 @@ class setup {
     if ($vars['files']) {
       echo "<li>Changing now the permissions for the files-folder: ";
       $this->outputSuccess(ftp_chmod($ch, 0777, "./files"));
+
       echo "</li>\n";
     }
     if ($vars['config']) {
@@ -167,7 +168,7 @@ class setup {
   }
 
   function outputSuccess ($value) {
-    $this->success = showResult($value);
+    $this->success = showResult($value,"OK","NOK");
   }
 
   function changePermissionsViaPhp ($configProblem, $filesProblem) {
