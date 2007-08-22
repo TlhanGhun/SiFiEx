@@ -3,6 +3,8 @@
 // this file will be called on first time setup of SiFiEx
 // to provide an easy installation and enough help for problems
 // coming out of insufficient write access to specific directories
+// most of the functions have to called from files yling directly in 
+// the upmost SiFiEx-folder bacause of relative pathes in there
 
 class setup {
   function writeAnalysis () {
