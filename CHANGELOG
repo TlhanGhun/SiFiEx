@@ -1,3 +1,6 @@
+0.2
+  - small change in english language file
+
 0.2-Beta4
   - Some cleanup to the code
   - fixed a security issue (uploaded could be executed using PHP)

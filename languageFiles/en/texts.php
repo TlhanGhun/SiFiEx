@@ -7,7 +7,7 @@
     'no'			=> "No",
 
     ### Upload of file
-    'unExpandUpload'	=> "Camcel upload",
+    'unExpandUpload'	=> "Cancel upload",
     'uploadExpand'	=> "Upload new file",
     'uploadHeading'	=> "Upload new file",
     'uploadChooseFile'	=> "Please choose a file from your local harddisc:",
