@@ -28,6 +28,22 @@ class setup {
     }
     echo "  </li>\n";
     echo "</ul>\n";
+
+    if($this->foundProblems()) {
+      echo "<p>I don't have enough write permissions to the needed directories. I now will try to change the permissions myself but on many hosted webspaces the needed commands are deactivated out of security reasons...</p>\n";
+      echo "<ul>\n";
+      echo "  <li>Trying to change permissions: ";
+      if ($this->changePermissionsViaPhp ($this->configProblem, $this->filesProblem)) {
+        echo "<span class=\"OK\">OK</span>";
+        $this->filesProblem = FALSE;
+      } else {
+        echo "<span class=\"NotOK\">NOT OK</span>";
+      }
+
+
+      echo "</ul>\n";
+      
+     }
     
     if(!$this->foundProblems()) {
       echo "<p>Everything seems to be fine on your computer. I now will create a default configuration for you in the file called &quot;config.php&quot;. Maybe you want to change some settings in this file using a simple texteditor to adapt SiFiEx to your needs.</p>\n";
@@ -160,9 +176,50 @@ class setup {
     }
   }
 
+  function changePermissionsViaPhp ($configProblem, $filesProblem) {
+    if(!function_exists("chmod")) { return FALSE; };
+    $filesDone = FALSE;
+    $configDone = FALSE;
+    if ($filesProblem) {
+      if (chmod("./files", 0777)) { $filesDone = TRUE; };
+    } else {
+      $filesDone = TRUE;
+    }
+
+    if ($configProblem) {
+      $oldPerm = $this->filePermissions("./", TRUE);
+      if (chmod("./", 0777)) { 
+        if($this->writeNewConfig ()) {
+          chmod("./", $oldPerm);
+          $configDone = TRUE;
+        }
+      }
+    } else {
+      $configDone = TRUE;
+    }
+    if ($filesDone && $configDone) {
+      $this->filesProblem = FALSE;
+      $this->configProblem = FALSE;
+      return TRUE;
+    } else {
+      return FALSE;
+    }
+  }
+
+function filePermissions($file, $octal = false)
+  {
+    if(!file_exists($file)) return false;
+    $perms = fileperms($file);
+    $cut = $octal ? 2 : 3;
+    return substr(decoct($perms), $cut);
+}
+
   function writeNewConfig() {
-    #echo "<p>Writing config...</p>";
-    copy("./config.php.templ", "./config.php");    
+    if (copy("./config.php.templ", "./config.php")) {    
+      return TRUE;
+    } else {
+      return FALSE;
+    }
   }
 
   function writeHtmlHeader() {
