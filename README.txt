@@ -6,7 +6,8 @@
 1. Installation
 Just upload the extracted folder to your Webspace and make sure that the user running the PHP-Scripts is allowed to write and delete files in the included folder "files" and in the folder for SiFiEx.
 
-On first start SiFiEx checks all needed permissions and reports them to you.
+On first start SiFiEx checks all needed permissions and reports them to you (write access to the files folder for the user running PHP on your server).
+On the first start SiFiEx also allows you to supply your FTP-login to make needed changes for you automatically.
 
 1.1 First time configuration
 You can change some configurations by editing config.php. config.php will be created right after the first time of accessing SiFiEx using a browser by copying config.php.templ to config.php. Of course you can also copy it in this way by yourself if you want to have a config.php before the first access to SiFiEx
