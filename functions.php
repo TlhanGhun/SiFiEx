@@ -45,7 +45,16 @@ function writeWarning($warnText) {
 	echo "  <p>$warnText</p>\n";
 	echo "</div>\n";
 }
-function writeOngoing($text) {
+function writeOngoing($text) {    // *************************************************
+    // function writeOngoing
+    // Parameters:
+    //   $text: text to be displayed
+    // Return value: none
+    //
+    // Displays a small DIV with the correct class for skinning
+    // Only displayed if enabled in the configuration
+    // *************************************************  
+  
 	global $conf;
 	if($conf['showOngoing']) {
 		echo "<div class=\"ongoing\">\n";
@@ -54,6 +63,14 @@ function writeOngoing($text) {
 	}
 }
 function writeSuccess($text) {
+    // *************************************************
+    // function writeSuccess
+    // Parameters:
+    //   $text: text to be displayed
+    // Return value: none
+    //
+    // Displays a small DIV with the correct class for skinning
+    // *************************************************    
 	echo "<div class=\"success\">\n";
 	echo "  <p>$text</p>\n";
 	echo "</div>\n";
