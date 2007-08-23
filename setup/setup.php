@@ -8,6 +8,14 @@
 
 class setup {
   function writeAnalysis () {
+    // *************************************************
+    // function writeAnalysis 
+    // Parameters: none
+    // Return value: none
+    //
+    // Produces an output which shows if or if not all needed permissions
+    // are available
+    // *************************************************
     echo "<div id=\"setup\">\n";
     echo "<h1>Installation</h1>\n";
     echo "<p>Welcome to the firsttime setup of SiFiEx on this machine. To be able to share files SiFiEx will need some writing rights on your webspace. I will check this for you right now...</p>\n";
@@ -59,6 +67,13 @@ class setup {
   }
 
   function foundProblems () {
+    // *************************************************
+    // function foundProblem
+    // Parameters: none
+    // Return value: TRUE if there is a permission problem, otherwise FALSE
+    //
+    // Checks if any problem with permissions occured
+    // *************************************************
     if ($this->filesProblem || $this->configProblem) {
       return TRUE;
     } else {
@@ -67,6 +82,15 @@ class setup {
   }
 
   function fixProblems($files, $config) {
+    // *************************************************
+    // function fixProblems
+    // Parameters:
+    //   $files: if or if problems with permissions on files occured
+    //   $config: if or if not problems with permissions to create config occured
+    // Return value: none
+    //
+    // Shows solutions for found problems
+    // *************************************************
     echo "<div id=\"describeSetupProblems\">\n";
     echo "<h1>Howto make needed adjustments</h1>\n";
     if ($config) {
@@ -95,7 +119,15 @@ class setup {
   }
 
   function checkWritableConfig () {
-    # return FALSE;
+    // *************************************************
+    // function checkWritableConfig
+    // Parameters: none
+    // Return value: 
+    //   TRUE: config.php or the permissions are enough to create it
+    //   FALSE: missing permissions to create config.php
+    //
+    // Checks if config.php could be created (or if it's already there)
+    // *************************************************
     if (is_writable("./") || file_exists("config.php")) {
       return TRUE;
     } else {
@@ -104,11 +136,28 @@ class setup {
   }
 
   function checkWritableFilesFolder () {
-    # return FALSE;
+    // *************************************************
+    // function checkWritableFilesFolder
+    // Parameters: none
+    // Return value: TRUE if PHP has write access to files folder, otherwise FALSE
+    //
+    // Checks if files folder is writable to PHP
+    // *************************************************    
     return(is_writable("./files/"));
   }
 
   function createFtpForm ($files, $config) {
+    // *************************************************
+    // function createFtpForm
+    // Parameters:
+    //   $files: if or if problems with permissions on files occured
+    //   $config: if or if not problems with permissions to create config occured
+    // Return value: none
+    //
+    // Builds a form for the user to enter his data to access his FTP-Server
+    // Includes hidden parameters to tell the next page which of the
+    // problems have to be fixed and which not
+    // *************************************************    
     echo "<h1>Automatical change of needed adjustments</h1>\n";
     echo "<p>With the following form you can SiFiEx change all needed parameters for you automatically. Just enter the connection data to your FTP-Server and SiFiEx will make the rest for you. If you don't like to enter your connection data into this formular you can also make the changes by hand - see below howto make this.</p>\n";
     echo "<form id=\"ftpForm\" method=\"post\" action=\"$PHP_SELF\">\n";
@@ -168,10 +217,30 @@ class setup {
   }
 
   function outputSuccess ($value) {
+    // *************************************************
+    // function outputSuccess
+    // Parameters:
+    //   $value: value or return string of an function (should be TRUE or FALSE)
+    // Return value: $value
+    //
+    // Outputs OK or NOK for the operation incl. a CSS-class
+    // *************************************************    
     $this->success = showResult($value,"OK","NOK");
   }
 
   function changePermissionsViaPhp ($configProblem, $filesProblem) {
+    // *************************************************
+    // function changePermissionsViaPhp
+    // Parameters:
+    //   $filesProblem: if or if problems with permissions on files occured
+    //   $configProblem: if or if not problems with permissions to create config occured
+    // Return value: TRUE on success, otherwise FALSE
+    //
+    // Tries to use the builtin PHP-chmod to change the permissions
+    // as needed by SiFiEx
+    // Chmod is many time forbidden on hosters and even if not the PHP-user
+    // maybe not allowed the permissions for files belogning to the FTP-user
+    // *************************************************    
     if(!function_exists("chmod")) { return FALSE; };
     $filesDone = FALSE;
     $configDone = FALSE;
@@ -204,6 +273,13 @@ class setup {
 
 
   function writeNewConfig() {
+    // *************************************************
+    // function writeNewConfig
+    // Parameters: none
+    // Return value: TRUE on success, otherwise FALSE
+    //
+    // Tries to copy config.php.templ to config.php if it is not already there
+    // *************************************************    
     if(!is_file("./config.php")) {
       if (copy("./config.php.templ", "./config.php")) {
         return TRUE;
@@ -216,6 +292,13 @@ class setup {
   }
 
   function writeHtmlHeader() {
+    // *************************************************
+    // function writeHtmlHeader
+    // Parameters: none
+    // Return value: none
+    //
+    // Just outputs the (x)html-Header of the setup page
+    // *************************************************    
  ?>
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
   <head>

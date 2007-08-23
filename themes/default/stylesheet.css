@@ -84,19 +84,19 @@ h1 a {
   font-weight:bold;
 }
 
-#warning {
+.warning {
   background-color:#f55;
   border:1px solid darkred;
   margin-top:0.2em;
 }
-#ongoing {
+.ongoing {
   overflow:hidden;
   background-color:#ff0;
   border:1px dotted #aa0;
   margin-top:0.2em;
 } 
 
-#success {
+.success {
   overflow:hidden;
   background-color:#0f0;
   border:1px solid #0a0;
