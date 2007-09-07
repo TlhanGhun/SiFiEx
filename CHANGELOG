@@ -1,5 +1,7 @@
 0.2
   - small change in english language file
+  - many comments in functions and classes added
+  - we are now avoinding text outputs at setup time for ftp and filesystem calls 
 
 0.2-Beta4
   - Some cleanup to the code
