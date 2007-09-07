@@ -180,27 +180,27 @@ class setup {
     echo "<p>Trying now to change everything for you.</p>\n";
     echo "<ol>\n";
     echo "  <li>Logging onto host ".$vars['ftpHost'].": ";
-    $this->outputSuccess($ch = ftp_connect($vars['ftpHost']));
+    $this->outputSuccess($ch = @ftp_connect($vars['ftpHost']));
     echo "</li>\n";
     echo "  <li>Logging in using user ".$vars['ftpUser']." and the supplied password: ";
-    $this->outputSuccess($lh = ftp_login($ch, $vars['ftpUser'], $vars['ftpPassword']));
+    $this->outputSuccess($lh = @ftp_login($ch, $vars['ftpUser'], $vars['ftpPassword']));
     echo "</li>\n";
     if($vars['ftpPath'] != "") {
       echo "  <li>Changing to your SiFiEx directory &quot;".$vars['ftpPath']."&quot;: ";
-      $this->outputSuccess(ftp_chdir($ch, $vars['ftpPath']));
+      $this->outputSuccess(@ftp_chdir($ch, $vars['ftpPath']));
       echo "</li>\n";
     }
     if ($vars['files']) {
       echo "<li>Changing now the permissions for the files-folder: ";
-      $this->outputSuccess(ftp_chmod($ch, 0777, "./files"));
+      $this->outputSuccess(@ftp_chmod($ch, 0777, "./files"));
 
       echo "</li>\n";
     }
     if ($vars['config']) {
       echo "<li>Creating now the default configuration: ";
-      $getFile = ftp_get($ch, "./files/temp.php", "./config.php.templ", FTP_ASCII);
-      $this->outputSuccess(ftp_put($ch, "./config.php", "./files/temp.php", FTP_ASCII));
-      $deleteFile = ftp_delete($ch, "./files/temp.php");
+      $getFile = @ftp_get($ch, "./files/temp.php", "./config.php.templ", FTP_ASCII);
+      $this->outputSuccess(@ftp_put($ch, "./config.php", "./files/temp.php", FTP_ASCII));
+      $deleteFile = @ftp_delete($ch, "./files/temp.php");
       echo "</li>\n";
     }
 
@@ -245,7 +245,7 @@ class setup {
     $filesDone = FALSE;
     $configDone = FALSE;
     if ($filesProblem) {
-      if (chmod("./files", 0777)) { $filesDone = TRUE; };
+      if (@chmod("./files", 0777)) { $filesDone = TRUE; };
     } else {
       $filesDone = TRUE;
     }

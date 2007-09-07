@@ -220,6 +220,6 @@ if (!function_exists('ftp_chmod')) {
     // This function is part of PHP5 but not included in PHP4
     // so this is a backport to enable it in PHP4
     // *************************************************
-    return ftp_site($ftp_stream, sprintf('CHMOD %o %s', $mode, $filename));
+    return @ftp_site($ftp_stream, sprintf('CHMOD %o %s', $mode, $filename));
   }
 }
