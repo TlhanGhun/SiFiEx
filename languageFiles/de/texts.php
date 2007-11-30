@@ -4,7 +4,7 @@
     'greeting'		=> "Willkommen bei SiFiEx von Sven Walther",
     'firstStart'		=> "Willkommen bei SiFiEx zu Ihreen ersten Start. Es wurde für Sie automatisch eine Datei config.php mit Standardeinstellungen erstellt - vielleicht wollen Sie in dieser etwas anpassen...",
     'yes'			=> "Ja",
-    'no	'		=> "Nein",
+    'no'		=> "Nein",
 
     ### Upload of file
     'unExpandUpload'	=> "Abbrechen",
