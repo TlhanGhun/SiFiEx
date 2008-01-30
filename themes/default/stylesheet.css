@@ -13,13 +13,14 @@ h1 {
   margin-top:0;
   height:75px;
   line-height:75px;
-  font-wight:bold;
+  font-weight:bold;
   font-size:30px;
   padding-left:120px;
   text-decoration:none;
   color:black; 
   background-image:url(images/SiFiExLogo.png);
   background-repeat:no-repeat;
+  float:left;
 }
 
 h1 a {
@@ -28,6 +29,7 @@ h1 a {
 }
 
 #expandUploadForm {
+  clear:both;
   float:right;
 }
 
@@ -55,6 +57,7 @@ h1 a {
 }
 
 #files {
+  clear:right;
   margin-left:13em;
   margin-right:0.5em;
 }
@@ -75,6 +78,11 @@ h1 a {
 .renameButton {
   border:1px solid black;
   background-color:yellow;
+}
+
+.mailButton {
+  border:1px solid black;
+  background-color:lightblue;
 }
 
 #greeting {
@@ -104,10 +112,10 @@ h1 a {
 } 
 
 #footer {
-  border-top:1px solid #aaa;
   clear:both;
   font-style:italic;
-  font-size:0.7em;
+  font-size:0.8em;
+  text-align:right;
 }
 
 th {
@@ -144,3 +152,40 @@ tr.odd {
   background-color:#ddd;
 }
 
+div#progressBar {
+  border:1px solid black;
+  width:200px;
+  height:1.2em;
+  margin:0;
+  padding:0;
+}
+
+div#progressDone {
+  border:none;
+  float:left;
+  background-color:#77e;
+  height:1.2em;
+}
+
+div#progressToDo {
+  height:1.2em;
+  border:none;
+  float:right;;
+  background-color:#fff;;
+}
+
+#progressInfo {
+  clear:both;
+}
+
+#helperFunctions {
+  float:right;  
+}
+
+#helpLink {
+  font-weight:bold;
+  text-decoration:none;
+  border-bottom:1px dotted black;
+  margin:0.1em;
+  
+}

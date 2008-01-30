@@ -24,7 +24,9 @@ Another way is to create a file called ".htaccess" (the dot in front is importan
    php_value upload_max_filesize 50M 
    php_value post_max_size 50M 
 
-If you have neither access to the php.ini nor the settings in .htaccess will help (adminstrators can disable this feature int he webserver) ask your provider to change those values for you
+If you have neither access to the php.ini nor the settings in .htaccess do help you (administrators can disable this feature in the webserver) ask your provider to change those values for you
 
 3. Securing SiFiEx
-You should provide password protection to the whole SiFiEx - see using .htaccess on http://www.freewebmasterhelp.com/tutorials/htaccess/3 for example
+You should(!!!) provide password protection to the whole SiFiEx - see using .htaccess on http://www.freewebmasterhelp.com/tutorials/htaccess/3 for example
+As of the current version there are known not as secure as they should functions in SiFiEx - so don't make it available open to all hackers in the world.
+Much enhanced security is on the roadmap for a future release

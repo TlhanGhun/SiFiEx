@@ -5,6 +5,8 @@
     'firstStart'	=> "Welcome to SiFiEx for the first time. I just created a default configuration file called config.php for you. Maybe you want to have a look at this file and change some settings",
     'yes'			=> "Yes",
     'no'			=> "No",
+    'cancel'  => "Cancel",
+    'help'    => "Help",
 
     ### Upload of file
     'unExpandUpload'	=> "Cancel upload",
@@ -17,7 +19,7 @@
     'uploadBePatient'	=> "Be patient...",
     'uploadMaxSize'	=> "Maximum file size: ",
     'uploading'		=> "The file is being uploaded...",
-    'uploadError'		=> "An error occured during upload - please try again or ask the adminstrator of this site for help",
+    'uploadError'		=> "An error occurred during upload - please try again or ask the adminstrator of this site for help",
     'uploadSuccess'	=> "The file has been successfully uploaded",
 
     ### File listing
@@ -35,12 +37,23 @@
     'deleting'		=> "Deleting file...",
     'deleteSuccess'	=> "File has been deleted successfully",
     'deleteError'		=> "I was unable to delete the file",
+    
+    ### rename file
+    'renameHeader'  => "Please enter the new name for the file",
+    'renamingFile'  => "Renaming file...",
+    'renameDone' => "File has been renamed",
+    'renameError'   => "Renaming failed",
+    
+    ### remail files
+    'remailHeader'  => "Enter one or more mail addresses (separated by \",\") to send a notification email including direct download link to",
+    'remailNow'     => "Send email(s)",
+    'remailingFile' => "Mail is being sent to: ",
 
     ### Content of mails
     'mailSubject'	=> "A new file has been uploaded for you to the file exchange",
     'mailStart'		=> "Hello, someone uploaded a file for you. You can find the file under the following link:",
-    'mailPassword'	=> "The access has been secured by username and password. If you don't know a login ask tht person who uploaded the file for you",
-    'mailEnd'		=> "Greetings from SiFiEx",
+    'mailPassword'	=> "The access has been secured by username and password. If you don't know a login ask the person who uploaded the file for you",
+    'mailEnd'		=> "Greetings from SiFiEx - Simple File Exchange",
     'mailSuccess'	=> "Mail has been successfully sent to ", 
     'mailError'		=> "Error sending e-mail",
 

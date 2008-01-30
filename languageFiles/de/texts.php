@@ -5,6 +5,8 @@
     'firstStart'		=> "Willkommen bei SiFiEx zu Ihreen ersten Start. Es wurde für Sie automatisch eine Datei config.php mit Standardeinstellungen erstellt - vielleicht wollen Sie in dieser etwas anpassen...",
     'yes'			=> "Ja",
     'no'		=> "Nein",
+    'cancel' => "Abbrechen",
+    'help'   => "Hilfe",
 
     ### Upload of file
     'unExpandUpload'	=> "Abbrechen",
@@ -17,7 +19,7 @@
     'uploadStart'		=> "Start: ",
     'uploadBePatient'	=> "Geduld...",
     'uploading'		=> "Die Datei wird hochgeladen...",
-    'uploadError'		=> "Beim hochladen ist ein Fehler aufgetrten - bitte versuchen Sie es erneut oder fragen Sie den Adminstrator dieser Seite.",
+    'uploadError'		=> "Beim hochladen ist ein Fehler aufgetreten - bitte versuchen Sie es erneut oder fragen Sie den Administrator dieser Seite.",
     'uploadSuccess'	=> "Die Datei wurde erfolgreich hochgeladen",
 
     ### File listing
@@ -26,7 +28,7 @@
     'listSize'		=> "Dateigr&ouml;&szlig;e",
     'listActions'		=> "Aktionen",
     'listDelete'		=> "L&ouml;schen",
-    'listRename'		=> "Rename",
+    'listRename'		=> "Umbenennen",
     'listMail'		=> "Link verschicken",
     'noFilesAvailable'	=> "Aktuell keine Dateien vorhanden",
 
@@ -35,10 +37,21 @@
     'deleting'		=> "Datei wird gel&ouml;scht...",
     'deleteSuccess'	=> "Datei wurde gel&ouml;scht",
     'deleteError'		=> "Konnte die Datei nicht l&ouml;schen",
+    
+    ### Rename file
+    'renameHeader'  => "Bitte geben Sie denn neuen Namen ein",
+    'renamingFile'  => "Dateiname wird ge&auml;ndert",
+    'renameDone' => "Datei wurde umbenannt",
+    'renameError'   => "Umbenennen fehlgeschlagen",
+    
+    ### remail files
+    'remailHeader'  => "Bitte geben Sie eine oder mehrere (durch \",\" getrennt) E-Mail-Adressen an",
+    'remailNow'     => "Sende E-Mail(s)",
+    'remailingFile' => "E-Mail wird geschickt an: ",    
 
     ### Content of mails
     'mailSubject'		=> "Eine neue Datei wurde fuer Sie auf dem Austauschserver bereitgestellt",
-    'mailStart'		=> "Halloo\n\neine neue Datei wurde fuer Sie auf dem Austauschserver hinterlegt. Sie erreichen diese unter dem folgenden Link: ",
+    'mailStart'		=> "Hallo\n\neine neue Datei wurde fuer Sie auf dem Austauschserver hinterlegt. Sie erreichen diese unter dem folgenden Link: ",
     'mailPassword'	=> "Die Datei wurde mittels Nutzername und Passwort geschuetzt. Wenn Sie diese nicht kennen fragen SIe bitte die Person, welche Ihnen die Datei bereitgestellt hat.",
     'mailEnd'		=> "Gruesse von SiFiEx",
     'mailSuccess'		=> "E-Mail wurde erfolgreich gesendet an ",

@@ -75,6 +75,11 @@ function writeSuccess($text) {
 	echo "  <p>$text</p>\n";
 	echo "</div>\n";
 }
+
+function renameFile($oldName, $newName) {
+  return rename("files/".$oldName, "files/".$newName);
+}
+
 function sendMail($receipient, $fileName, $conf, $lang) {
     // *************************************************
     // function sendMail
@@ -90,6 +95,7 @@ function sendMail($receipient, $fileName, $conf, $lang) {
     // *************************************************  
 	$header = "";
 	$header .= "From: ".$conf['mailSenderName']." <".$conf['mailSenderEmail'].">\r\n";
+	ini_set("sendmail_from",$conf['mailSenderEmail']);
 	$body = "";
 	$body .= $lang['mailStart']." ";
 	$pathFull = explode("/", $_SERVER['PHP_SELF']);
@@ -222,4 +228,40 @@ if (!function_exists('ftp_chmod')) {
     // *************************************************
     return @ftp_site($ftp_stream, sprintf('CHMOD %o %s', $mode, $filename));
   }
+}
+
+function generateLanguagesDropdown() {
+  echo "<form method=\"post\" action=\"index.php\" id=\"languageSelector\">\n";
+  echo "  <select name=\"language\" size=\"1\">";
+  $languages=array();
+  $handle=opendir('languageFiles/');
+  while ($language = readdir ($handle)) {
+    if ($language != "." && $language != ".." && $language != ".svn") {
+      array_push($languages, $language);
+    }
+  }
+  foreach ($languages as $key=>$value) {
+    echo "    <option >$value</option>\n";
+  }
+  echo "  </select>\n";
+  echo "  <input type=\"submit\" name=\"changeLanguage\" value=\"&gt;\" />\n";
+  echo "</form>\n";
+}
+
+function generateThemesDropdown() {
+  echo "<form method=\"post\" action=\"index.php\" id=\"themeSelector\">\n";
+  echo "  <select name=\"theme\" size=\"1\">";
+  $themes=array();
+  $handle=opendir('themes/');
+  while ($theme = readdir ($handle)) {
+    if ($theme != "." && $theme != ".." && $theme != ".svn") {
+      array_push($themes, $theme);
+    }
+  }
+  foreach ($themes as $key=>$value) {
+    echo "    <option >$value</option>\n";
+  }
+  echo "  </select>\n";
+  echo "  <input type=\"submit\" name=\"changeTheme\" value=\"&gt;\" />\n";
+  echo "</form>\n";
 }

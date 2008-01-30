@@ -17,20 +17,20 @@ Documentation for themes and translations
 Remail link
 Rename files
 
-0.3.1
+0.4
+Users can choose language and theme by themself
+
+0.5
+Upload progress bar
+
+0.6
 test if file size is lower than the maximum allowed
 maxiumum file size in configuration
 
-0.4
+0.7
 Thumbnail of images etc.
 Security, security, security
 
-0.5
-Users can choose language and theme by themself
-
-0.6
-Upload progess bar (JavaScript)
-
->=0.7
-we will see
+>=0.8
+we will see - what's about nice and clean OOP...?
 

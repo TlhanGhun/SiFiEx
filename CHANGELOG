@@ -1,21 +1,71 @@
+***************************
+0.4
+  - user can indidual change themes and languages
+  - help is now an own external page
+  - added a "noSkin"-theme without any CSS (to be honest mainly to test the new selector ;) )
+  
+Update from 0.2 or 0.3 simply by unpacking the archive over the installation (yes, that's all...)
+  
+new styles in themes
+ o #helperFunctions: area with theme and language-selector as well es the help link
+ o #helpLink: style of the link to the help page
+ o form#themeSelector: formular for selecting theme
+ o form#languageSelector: formular for selecting language
+ 
+ new entries for translation
+  o help: Text of the link to help page
+  
+***************************
+0.3
+  - renaming of files added
+  - resending email containing links added
+  - fixed a bug in sending mail with some Windows mail servers
+  
+new entries for translations:
+ o noFilesAvailable: shown if no files are in the upload directory
+ o cancel: general for cancellation of something
+ o renameHeader: text in front of the formular for renaming files
+ o renamingFile: text during rename process
+ o renameDone: successfully renamed
+ o renameError: error during renaming
+ o remailHeader: text in front of the formular for remailing link
+ o remailNow: submit button for sending mails
+ o remailingFile: text during sending of e-mail 
+  
+new entries in configuration
+ o enableProgressBar: to enable progressBar turn to TRUE 
+   ==> not implemented now!!!
+ 
+new styles in themes
+ o .mailButton: list button for remailing links
+ o div#progressBar: container for progressBar (including width)
+ o div#progressDone: design for already done percentage (background-color and
+   background-image)
+ o div#progressToDo: design for ToDo percentage    
+
+***************************
 0.2
   - small change in english language file
   - many comments in functions and classes added
   - we are now avoinding text outputs at setup time for ftp and filesystem calls 
 
+***************************
 0.2-Beta4
   - Some cleanup to the code
   - fixed a security issue (uploaded could be executed using PHP)
   - fixed a very bad bug in the automatic FTP setup (didn't work in 
     the old version at all - sorry for that)
 
+***************************
 0.2-Beta3
   - Added a function to try to change the permissions using PHP-builtin chmod
 
+***************************
 0.2-Beta2
   - Added the possibility to change permissions directly in the setup
     using FTP in SiFiEx itself
 
+***************************
 0.2-Beta1
   - Completely rewritten setup process
     o on first start a special setup page is displayed
@@ -29,28 +79,31 @@
   - if you want to have a look at the new setup: delete or rename your
     config.php and it will be started on the next access to the start page
 
+***************************
 0.1.1
-  - added many CSS-classes and ids for flexible themes - every
+  - added many CSS-classes and IDs for flexible themes - every
     single part of SiFiEx can now exclusivly been styled
   - if no file is in the upload directory a hint is displayed
   - display of filenames can be shortened if they are to long for a nice display - see new config parameter
-    Example: veryVeryVeryLongFilename becomes something like veryV..ename
+    Example: "veryVeryVeryLongFilename" becomes something like "veryV..ename"
   - upload form is now not always visble but only after clicking
     on a buttom (see also new translations)
 
 new entries in configuration
  o maxFilenameLength: maximum length of filename to be displayed
    before it is cutted. Leave 0 to not cut the filename at all
-   Just use for the display - the filename itself won't be altered
+   Just used for the display - the filename itself won't be altered
 
 new entries for translations:
  o noFilesAvailable: shown if no files are in the upload directory
  o unExpandUpload: Cancel upload form
  o expandUpload: open upload form
 
+***************************
 0.1
   - included a roadmap
 
+***************************
 0.1-Beta2
   - Fixed a bug in the display of the maximum allowed file size
   - changed display of maximum allowed file size to be more human readable
@@ -59,12 +112,14 @@ new entries for translations:
   - default theme now has a nice (hopefully...) logo
   - included a favicon with the new logo
 
+***************************
 0.1-Beta1
   - Included all translations in the sourcecode
   - Added english (en) and german (de) translations
   - Changed the size of the upload form to make it usable on "smaller" screens
   - maximum file size for upload is now being displayed
 
+***************************
 0.1-Alpha2
 Mail:
   - Successfull sending of mail will be now reported to the user
@@ -72,11 +127,12 @@ Mail:
   - Link to file should now work correctly
 
 General:
-  - Extracted functions to own file calles "functions.php"
-  - created a config.php.templ to avoid overwriting changed settings by user in there owen config.php. If at startup no config.php is found the template will be copied to set the defaults
+  - Extracted functions to extra file called "functions.php"
+  - created a config.php.templ to avoid overwriting changed settings by user in there own config.php. If at startup no config.php is found the template will be copied to set the defaults
 
 Translations:
   - new "firstStart"-text is displayed when default configuration has been created because of first time starting SiFiEx
 
+***************************
 0.1-Alpha1
 First published version to give a first impression of upcoming release

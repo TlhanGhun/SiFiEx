@@ -1,4 +1,5 @@
-<?php 
+<?php
+session_start();
 require_once("functions.php");
 if(!file_exists("config.php") || !is_writable("files/")) {
   require("setup/setup.php");
@@ -13,6 +14,19 @@ if(!file_exists("config.php") || !is_writable("files/")) {
   }
 }
 require_once("config.php");
+
+if ($HTTP_POST_VARS['changeLanguage']) {
+  $_SESSION['language'] = $HTTP_POST_VARS['language'];
+}
+if ($HTTP_POST_VARS['changeTheme']) {
+  $_SESSION['theme'] = $HTTP_POST_VARS['theme'];
+}
+if ($_SESSION['language']) {
+  $config['language'] =$_SESSION['language']; 
+}
+if ($_SESSION['theme']) {
+  $config['theme'] =$_SESSION['theme']; 
+}
 require_once("languageFiles/".$config['language']."/texts.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -28,6 +42,13 @@ require_once("languageFiles/".$config['language']."/texts.php");
   <body>
     <div id="logoHeader">
       <h1><a href="">Simple File Exchange <?php echo $config['version']; ?></a></h1>
+    </div>
+    <div id="helperFunctions">
+      <?php 
+        generateLanguagesDropdown();
+        generateThemesDropdown();
+      ?>
+      <a href="help.php" id="helpLink"><?php echo $lang['help']; ?></a>
     </div>
     <form id="expandUploadForm" action="<?php echo $PHP_SELF; ?>" method="post">
       <?php if ($HTTP_POST_VARS['expandUploadSubmit']) {
@@ -49,6 +70,7 @@ if ($firstStart) {
 <?php
 if ($HTTP_POST_VARS['doUpload'] != "") {
   writeOngoing($lang['uploading']);
+  flush();
   $fileName = $_FILES['uploadPic']['name'];
   if ($HTTP_POST_VARS['hideSuffix'] != "") {
     $fileName .= $config['hiddenSuffix'];
@@ -77,6 +99,49 @@ if ($HTTP_POST_VARS['delete'] == "first") {
     </div>
 <?php
 }
+
+
+if ($HTTP_POST_VARS['remailButton'] != "") {
+    writeWarning($lang['remailHeader']);
+      ?>
+      <div class="ongoing">
+      <form method="post" action="index.php">
+        <input name="mailAdresses" value="" />
+        <input type="submit" name="remail" value="<?php echo $lang['remailNow'];  ?>" />
+        <input type="submit" name="egal" value="<?php echo $lang['cancel']; ?>" />
+        <input type="hidden" name="name" value="<?php echo $HTTP_POST_VARS['name']; ?>" />
+      </form>
+    </div>
+<?php
+}
+
+if ($HTTP_POST_VARS['renameButton'] != "") {
+    writeWarning($lang['renameHeader']);
+      ?>
+      <div class="ongoing">
+      <form method="post" action="index.php">
+        <input name="newName" value="<?php echo $HTTP_POST_VARS['name']; ?>" />
+        <input type="submit" name="rename" value="<?php echo $lang['listRename'];  ?>" />
+        <input type="submit" name="egal" value="<?php echo $lang['cancel']; ?>" />
+        <input type="hidden" name="name" value="<?php echo $HTTP_POST_VARS['name']; ?>" />
+      </form>
+    </div>
+<?php
+}
+
+if ($HTTP_POST_VARS['rename'] != "") {
+    writeOngoing($lang['renamingFile']);
+    if (renameFile($HTTP_POST_VARS['name'], $HTTP_POST_VARS['newName'])) {
+      writeSuccess($lang['renameDone']);
+    } else {
+      writeWarning($lang['renameError']);
+    }
+}
+
+if ($HTTP_POST_VARS['remail'] != "") {
+    sendMail($HTTP_POST_VARS['mailAdresses'],$HTTP_POST_VARS['name'],$config,$lang);
+}
+
 
 if ($HTTP_POST_VARS['delete'] == $lang['yes']) {
   writeOngoing($lang['deleting']);
@@ -186,14 +251,14 @@ while (list(, $key) = each ($images)) {
               <input type="hidden" name="delete" value="first" />
               <input type="hidden" name="name" value="<?php echo $key ?>" />
             </form>
-            <!--          <form method="post" action="<?php echo $_SELF?>">
-            <input class="renameButton" type="submit" name="submit" value="<?php echo $lang['listRename']; ?>" />
+            <form method="post" action="<?php echo $_SELF?>">
+            <input class="renameButton" type="submit" name="renameButton" value="<?php echo $lang['listRename']; ?>" />
             <input type="hidden" name="name" value="<?php echo $key ?>">
             </form>
             <form method="post" action="<?php echo $_SELF?>">
-              <input class="mailButton" type="submit" name="submit" value="<?php echo $lang['listMail']; ?>" />
+              <input class="mailButton" type="submit" name="remailButton" value="<?php echo $lang['listMail']; ?>" />
               <input type="hidden" name="name" value="<?php echo $key ?>">
-            </form> -->
+            </form>
           </td>
         </tr>        
 <?php
@@ -204,13 +269,10 @@ while (list(, $key) = each ($images)) {
     }
       ?>
     </div>
-    <div id="faq">
-      <h2>FAQ</h2>
-      <?php readfile("languageFiles/".$config['language']."/faq.html") ?>
-    </div>
+
 
     <div id="footer">
-      <p>SiFiEx is free software by Sven Walther - this is version <?php echo $config['version']; ?></p>
+      <p>SiFiEx is free software (see <a href="LICENSE.txt">license</a>) by Sven Walther - this is version <?php echo $config['version']; ?></p>
     </div>
   </body>
 </html>
