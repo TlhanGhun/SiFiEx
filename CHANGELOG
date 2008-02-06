@@ -1,4 +1,9 @@
 ***************************
+0.4.1
+ - Added forgotten help.php to archive
+ - new theme "dark" - much darker colours and left/right boxes have been exchanged
+
+***************************
 0.4
   - user can indidual change themes and languages
   - help is now an own external page
