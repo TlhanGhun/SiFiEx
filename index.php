@@ -38,6 +38,25 @@ require_once("languageFiles/".$config['language']."/texts.php");
     <meta name="generator" content="Sven Walther" />
     <link rel="Shortcut Icon" type="image/x-icon" href="favicon.ico" />
     <link href="<?php echo "themes/".$config['theme']."/stylesheet.css"; ?>" rel="stylesheet" type="text/css" />
+    <?php
+      if($config['snarlEnabled']) {
+    ?>
+        <script src="snarl.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript">
+          uploadStarted = new Snarl.NotificationType("Upload started", true);
+          Snarl.register("SiFiEx", [uploadStarted]);
+          
+          function uploadStartFunc() {
+          uploadStarted = new Snarl.NotificationType("Upload started", true);
+          Snarl.register("SiFiEx", [uploadStarted]);
+          Snarl.notify(uploadStarted, 'Upload started', 'Uplod of file has been started', Snarl.Priority.VeryLow, false);
+          }
+
+        </script>
+        
+    <?php
+      }
+    ?>
   </head>
   <body>
     <div id="logoHeader">
@@ -69,6 +88,18 @@ if ($firstStart) {
       </div>
 <?php
 if ($HTTP_POST_VARS['doUpload'] != "") {
+
+      if($config['snarlEnabled']) {
+    ?>
+            <script type="text/javascript">
+         // uploadStarted = new Snarl.NotificationType("Upload started", true);
+         // Snarl.register("SiFiEx", [uploadStarted]);
+         // Snarl.notify(uploadStarted, 'Upload started', 'Uplod of file has been started', Snarl.Priority.VeryLow, false);
+          </script>
+        </script>
+    <?php
+      }
+
   writeOngoing($lang['uploading']);
   flush();
   $fileName = $_FILES['uploadPic']['name'];
@@ -81,7 +112,19 @@ if ($HTTP_POST_VARS['doUpload'] != "") {
   if (!move_uploaded_file($_FILES['uploadPic']['tmp_name'], "files/$fileName")) {
     writeWarning($lang['uploadError']);
   } else {
+  
+        if($config['snarlEnabled']) {
+    ?>
+            <script type="text/javascript">
+          uploadFinished = new Snarl.NotificationType("Upload finished", true);
+          Snarl.register("SiFiEx", [uploadFinished]);
+          Snarl.notify(uploadStarted, 'Upload finished', 'Uplod of file has been finished succesfully', Snarl.Priority.VeryLow, false);
+          </script>
+        </script>
+    <?php
+      }
     writeSuccess($lang['uploadSuccess']);
+    
     if ($HTTP_POST_VARS['informMail'] != "") {
       sendMail($HTTP_POST_VARS['informMail'], $fileName, $config, $lang);
     }
@@ -176,7 +219,7 @@ if ($HTTP_POST_VARS['delete'] == $lang['yes']) {
             <input name="informMail" />
           </li>
           <li id="startButton"><?php echo $lang['uploadStart']; ?>
-            <input type="submit" name="doUpload" value="Import" />
+            <input type="submit" name="doUpload" value="Import" onclick="uploadStartFunc()"/>
           </li>
           <li id="bePatient"><?php echo $lang['uploadBePatient']; ?></li>
         </ol>

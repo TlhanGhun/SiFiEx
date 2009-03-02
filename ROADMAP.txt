@@ -21,7 +21,7 @@ Rename files
 Users can choose language and theme by themself
 
 0.5
-Upload progress bar
+Snarl notifcations
 
 0.6
 test if file size is lower than the maximum allowed
