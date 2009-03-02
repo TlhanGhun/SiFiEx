@@ -7,7 +7,7 @@ Snarl = function(){
 	var field = null;
 	var isInitialized = false;
 	var isRegistered = false;
-	var snarlIsRunning = true; //TODO:
+	var snarlsRunning = true; //TODO:
 	var appName = null;
 
 	function send(data){
@@ -171,5 +171,3 @@ Snarl.utils = function(){
 		}()
 	}
 }();
-
-
