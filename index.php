@@ -1,7 +1,8 @@
 <?php
 session_start();
 require_once("functions.php");
-if(!file_exists("config.php") || !is_writable("files/")) {
+
+if(!file_exists("config.php")) {
   require("setup/setup.php");
   if ($HTTP_POST_VARS['doFtpChanges']) {
     $tryUsingFtp = new setup;
@@ -14,6 +15,54 @@ if(!file_exists("config.php") || !is_writable("files/")) {
   }
 }
 require_once("config.php");
+
+if(!is_writable($config['fileDir'])) {
+  require("setup/setup.php");
+  if ($HTTP_POST_VARS['doFtpChanges']) {
+    $tryUsingFtp = new setup;
+    $tryUsingFtp->writeHtmlHeader();
+    $tryUsingFtp->writeUsingFtp($HTTP_POST_VARS);
+  } else {
+    $initialSetup = new setup;
+    $initialSetup->writeHtmlHeader();
+    $initialSetup->writeAnalysis();
+  }
+}
+
+if(!file_exists(".htaccess") || !file_exists(".htpasswd")) {
+  echo "Set the Administrator Username and Password";
+  if(isset($HTTP_POST_VARS['submit'])){
+    if ( isset($_POST['user']) && isset($_POST['password1'])){
+      if( $_POST['password1'] == $_POST['password2'] ){
+        $user = $_POST['user'];
+        $password1 = $_POST['password1'];
+        $htpasswd_text = "\n".$user .":".crypt($password1,CRYPT_STD_DES);
+
+        writeFile('.htpasswd', $htpasswd_text);
+
+        $htaccess = "IndexIgnore .htaccess , .htpasswd , .. , . \n";
+        $htaccess .= 'AuthName "Admin Access"';
+        $htaccess .= "\n"."AuthType Basic \n";
+        $htaccess .= "AuthUserFile ".$_SERVER['DOCUMENT_ROOT']."/".$config['installDir'].".htpasswd \n";
+        $htaccess .= "Require valid-user";
+
+        writeFile('.htaccess', $htaccess);
+      } else {
+        echo "<p><hr></p>";
+        echo "<b>Passwords do not match</b>";
+        echo "<p><hr></p>";
+      }
+    }
+  } else {
+    echo '<form method="post" action="index.php"><table>';
+    echo '<tr><td>Username:</td><td><INPUT TYPE="TEXT" NAME="user"></td></tr>';
+    echo '<tr><td>Password:</td><td><INPUT TYPE="PASSWORD" NAME="password1"></td></tr>';
+    echo '<tr><td>Password again:</td><td><INPUT TYPE="PASSWORD" NAME="password2"></td></tr>';
+    echo '<tr><td><center><INPUT type=submit name="submit" VALUE="Set User / Pass">';
+    echo '</center></td></tr>';
+    echo '</table><form>';
+  }
+}
 
 if ($HTTP_POST_VARS['changeLanguage']) {
   $_SESSION['language'] = $HTTP_POST_VARS['language'];
@@ -67,7 +116,8 @@ require_once("languageFiles/".$config['language']."/texts.php");
         generateLanguagesDropdown();
         generateThemesDropdown();
       ?>
-      <a href="help.php" id="helpLink"><?php echo $lang['help']; ?></a>
+      <a href="help.php" target="_blank" id="helpLink"><?php echo $lang['help']; ?></a>
+	  <a href="htedit.php" target="_blank" id="helpLink">Admin (use with caution)</a>
     </div>
     <form id="expandUploadForm" action="<?php echo $PHP_SELF; ?>" method="post">
       <?php if ($HTTP_POST_VARS['expandUploadSubmit']) {
@@ -109,7 +159,7 @@ if ($HTTP_POST_VARS['doUpload'] != "") {
   if($fileName == ".htaccess") {
     $fileName = "htaccess-Leading dot erased by SiFiEx";
   }
-  if (!move_uploaded_file($_FILES['uploadPic']['tmp_name'], "files/$fileName")) {
+  if (!move_uploaded_file($_FILES['uploadPic']['tmp_name'], $config['fileDir'].$HTTP_POST_VARS['chooseFolder']."/".$fileName)) {
     writeWarning($lang['uploadError']);
   } else {
   
@@ -126,7 +176,7 @@ if ($HTTP_POST_VARS['doUpload'] != "") {
     writeSuccess($lang['uploadSuccess']);
     
     if ($HTTP_POST_VARS['informMail'] != "") {
-      sendMail($HTTP_POST_VARS['informMail'], $fileName, $config, $lang);
+      sendMail($HTTP_POST_VARS['informMail'], "/".$config['fileDir'].$HTTP_POST_VARS['chooseFolder']."/".$fileName, $config, $lang);
     }
   }
 }
@@ -182,7 +232,7 @@ if ($HTTP_POST_VARS['rename'] != "") {
 }
 
 if ($HTTP_POST_VARS['remail'] != "") {
-    sendMail($HTTP_POST_VARS['mailAdresses'],$HTTP_POST_VARS['name'],$config,$lang);
+    sendMail($HTTP_POST_VARS['mailAdresses'],"/".$config['fileDir'].$HTTP_POST_VARS['name'],$config,$lang);
 }
 
 
@@ -190,9 +240,10 @@ if ($HTTP_POST_VARS['delete'] == $lang['yes']) {
   writeOngoing($lang['deleting']);
   # first we have to be aware that some evil guy trys to delete files
   # outside of our directory by deleting ".." and "/" in filename
-  $deleteFile=ereg_replace("\/","",$HTTP_POST_VARS['name']);
-  $deleteFile=(ereg_replace("\.\.","",$deleteFile));
-  if (@unlink("files/".$deleteFile)) {
+  $deleteFile=$HTTP_POST_VARS['name'];
+  //$deleteFile=ereg_replace("\/","",$HTTP_POST_VARS['name']);
+  //$deleteFile=(ereg_replace("\.\.","",$deleteFile));
+  if (@unlink($config['fileDir'].$deleteFile)) {
     writeSuccess($lang['deleteSuccess']);
   } else {
     writeWarning($lang['deleteError']);
@@ -211,6 +262,19 @@ if ($HTTP_POST_VARS['delete'] == $lang['yes']) {
           <li id="chooseFile"><?php echo $lang['uploadChooseFile']; ?>
             <br />
             <input type="file" name="uploadPic" size="4" /></li>
+			<li id="chooseFolder">Choose Folder for upload<br />
+		  <?php
+		  $handle=opendir($config['fileDir']);
+		  echo '<select name="chooseFolder">';
+		  while ($dir = readdir ($handle)) {
+		    if ($dir != "." && $dir != ".."  && filetype($config['fileDir'] . $dir) == "dir") {
+			  echo '<option value="'.$dir.'">'.$dir.'</option>';
+		    }
+		  }
+		  closedir($handle);
+		  echo "</select>"
+		  ?>
+          </li>
           <li id="hideSuffix"><?php echo $lang['uploadHideSuffix']; ?>
             <input type="checkbox" name="hideSuffix" />
           </li>
@@ -229,11 +293,40 @@ if ($HTTP_POST_VARS['delete'] == $lang['yes']) {
     <?php
     } else {
     ?>
-    <div id="files">
+	<?php
+	$colorChanger=1;
+$folders=array();
+$folders2=array();
+$images=array();
+$handle=opendir($config['fileDir']);
+while ($file = readdir ($handle)) {
+
+if ($file != "." && $file != ".."  && filetype($config['fileDir'] . $file) == "dir" ) {
+    $handle2=opendir($config['fileDir'] ."/". $file);
+	$images2=array();
+	while ($file2 = readdir ($handle2)) {
+	  if ($file2 != "." && $file2 != ".." && $file2!= ".htaccess" && $file2!= ".htpasswd" && $file2 != ".svn" && filetype($config['fileDir'] ."/". $file ."/". $file2) != "dir" ) {
+        array_push($images2, $file ."/". $file2);
+      }
+	}
+	closedir($handle2);
+	natcasesort($images2);
+	$images2 = array_reverse($images2);
+	array_push($folders,$images2);
+	array_push($folders2,$file);
+  }
+}
+closedir($handle);
+//natcasesort($images);
+//$images = array_reverse($images);
+//array_push($folders, $images);
+echo '<div id="files">';
+while ((list(, $images) = each ($folders)) && (list(, $file) = each ($folders2))){
+?>
       <table id="listOfFiles">
         <tr>
           <th>
-            <?php echo $lang['listName']; ?> <a href="?sort=NameUp">&uarr;</a> <a href="?sort=NameDown">&darr;</a>
+            <?php echo $file ;?>
           </th>
           <th>
 	    <?php echo $lang['listDate']; ?>
@@ -246,20 +339,7 @@ if ($HTTP_POST_VARS['delete'] == $lang['yes']) {
           </th>
         </tr>
 <?php
-$colorChanger=1;
-$images=array();
-$handle=opendir('files/');
-while ($file = readdir ($handle)) {
-  if ($file != "." && $file != ".." && $file!= ".htaccess" && $file != ".svn") {
-    array_push($images, $file);
-  }
-}
-closedir($handle);
-natcasesort($images);
-if ($HTTP_GET_VARS['sort']=="NameUp") {
-  $images = array_reverse($images);
-}
-reset($images);
+
 if (count($images) == 0) {
 	 ?>
 	  <tr>
@@ -269,7 +349,7 @@ if (count($images) == 0) {
 	  </tr>
 <?php
 }
-while (list(, $key) = each ($images)) {
+while (list( ,$key) = each ($images)) {
   if ($colorChanger > 0) {
     $class="odd";
   } else {
@@ -279,14 +359,14 @@ while (list(, $key) = each ($images)) {
         ?>        
         <tr class="<?php echo $class ?>">
           <td class="fileName">
-            <a href="files/<?php echo $key; ?>" title="<?php echo $key; ?>">
+            <a href="<?php echo $config['fileDir'].$key; ?>" title="<?php echo $key; ?>" target="_blank">
               <?php echo displayFileName($key, $config['maxFilenameLength']); ?></a>
           </td>
           <td class="fileDate">
-            <?php echo date ($config['dateFormat'], filemtime("files/$key")); ?>
+            <?php echo date ($config['dateFormat'],  filemtime($config['fileDir'].$key)); ?>
           </td>
           <td class="fileSize">
-            <?php echo size_hum_read(filesize("files/$key")); ?>
+            <?php echo size_hum_read(filesize($config['fileDir'].$key)); ?>
           </td>
           <td class="actions">
             <form method="post" action="<?php echo $_SELF?>">
@@ -309,13 +389,14 @@ while (list(, $key) = each ($images)) {
         ?>
       </table>
       <?php
+	  }
     }
       ?>
     </div>
 
 
     <div id="footer">
-      <p>SiFiEx is free software (see <a href="LICENSE.txt">license</a>) by Sven Walther - this is version <?php echo $config['version']; ?></p>
+      <p>SiFiEx is free software (see <a href="LICENSE.txt">license</a>) by Sven Walther (modified by Rob Tabberer) - this is version <?php echo $config['version']; ?></p>
     </div>
   </body>
 </html>

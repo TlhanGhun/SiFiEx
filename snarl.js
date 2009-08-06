@@ -17,7 +17,7 @@ Snarl = function(){
 		//window.prompt("url", url);
 		iframe.contentWindow.location.replace(url);
 	}
-	
+
 	return {
 		init : function(){
 			if(!isInitialized){
@@ -113,7 +113,7 @@ Snarl.utils = function(){
 				var c = String.fromCharCode(i);
 				if (!CHARS[c]) CHARS[c] = ((i < 16) ? '\\u000' : '\\u00') + i.toString(16);
 			};
-			  
+
 			function encodeString(str) {
 				if (!/[\x00-\x1f\\"]/.test(str)) {
 				  return str;
@@ -137,7 +137,7 @@ Snarl.utils = function(){
 						//case 'string'   : return '"' + encodeString(arg) + '"'; // break command is redundant here and below.
 						case 'string'   : return '"' + arg + '"'; // break command is redundant here and below.
 						case 'number'   : return String(arg);
-						case 'object'   : 
+						case 'object':
 						if (arg) {
 							var out = [];
 							if (arg instanceof Array) {

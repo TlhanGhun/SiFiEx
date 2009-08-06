@@ -21,8 +21,8 @@ Check the values for "upload_max_filesize" and "post_max_size". The lower value 
 
 Another way is to create a file called ".htaccess" (the dot in front is important) in the upmost SiFiEx-folder and insert the following lins:
 
-   php_value upload_max_filesize 50M 
-   php_value post_max_size 50M 
+   php_value upload_max_filesize 50M
+   php_value post_max_size 50M
 
 If you have neither access to the php.ini nor the settings in .htaccess do help you (administrators can disable this feature in the webserver) ask your provider to change those values for you
 

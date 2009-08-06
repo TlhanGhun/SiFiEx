@@ -101,7 +101,7 @@ function sendMail($receipient, $fileName, $conf, $lang) {
 	$pathFull = explode("/", $_SERVER['PHP_SELF']);
 	array_pop($pathFull);
 	$pathToScript=implode("/", $pathFull);
-	$body .= detectSSL()."://".$_SERVER['HTTP_HOST'].$pathToScript."/files/".$fileName."\n\n";
+	$body .= detectSSL()."://".$_SERVER['HTTP_HOST'].$pathToScript.$fileName."\n\n";
 	if ($conf['mailInfoPassword']) {
 		$body .= $lang['mailPassword']."\n\n";
 	}
@@ -264,4 +264,45 @@ function generateThemesDropdown() {
   echo "  </select>\n";
   echo "  <input type=\"submit\" name=\"changeTheme\" value=\"&gt;\" />\n";
   echo "</form>\n";
+}
+
+function writeFile($filetobechanged, $data) {
+  $filehandle = fopen($filetobechanged, 'w');
+  fwrite($filehandle , stripslashes($data));
+  fclose($filehandle);
+}
+
+function makeHtfiles(){
+  if(isset($HTTP_POST_VARS['submit'])){
+    echo "1";
+    if ( isset($_POST['user']) && isset($_POST['password1'])){
+      if( $_POST['password1'] == $_POST['password2'] ){
+        $user = $_POST['user'];
+        $password1 = $_POST['password1'];
+        $htpasswd_text = "\n".$user .":".crypt($password1,CRYPT_STD_DES);
+
+        writeFile('/.htpasswd', $htpasswd_text);
+
+        $htaccess = "IndexIgnore .htaccess , .htpasswd , .. , . \n";
+        $htaccess .= 'AuthName "Admin Access"';
+        $htaccess .= "\n"."AuthType Basic \n";
+        $htaccess .= "AuthUserFile ".$_SERVER['DOCUMENT_ROOT']."/".$config['installDir'].".htpasswd \n";
+        $htaccess .= "Require valid-user";
+
+        writeFile('/.htaccess', $htaccess);
+      } else {
+        echo "<p><hr></p>";
+        echo "<b>Passwords do not match</b>";
+        echo "<p><hr></p>";
+      }
+    }
+  } else {
+    echo '<form method="post" action="index.php"><table>';
+    echo '<tr><td>Username:</td><td><INPUT TYPE="TEXT" NAME="user"></td></tr>';
+    echo '<tr><td>Password:</td><td><INPUT TYPE="PASSWORD" NAME="password1"></td></tr>';
+    echo '<tr><td>Password again:</td><td><INPUT TYPE="PASSWORD" NAME="password2"></td></tr>';
+    echo '<tr><td><center><INPUT type=submit name="submit" VALUE="Set User / Pass">';
+    echo '</center></td></tr>';
+    echo '</table><form>';
+  }
 }

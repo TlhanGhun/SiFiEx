@@ -4,10 +4,10 @@ require_once("functions.php");
 require_once("config.php");
 
 if ($_SESSION['language']) {
-  $config['language'] =$_SESSION['language']; 
+  $config['language'] =$_SESSION['language'];
 }
 if ($_SESSION['theme']) {
-  $config['theme'] =$_SESSION['theme']; 
+  $config['theme'] =$_SESSION['theme'];
 }
 require_once("languageFiles/".$config['language']."/texts.php");
 ?>
