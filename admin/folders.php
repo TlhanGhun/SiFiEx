@@ -1,10 +1,39 @@
 <?php
 session_start();
-require_once("functions.php");
-require_once("config.php");
+require_once("../functions.php");
+require_once("../config.php");
+?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
+    <title>SiFiEx - Simple File Exchange <?php echo $config['version']; ?> - folder settingd</title>
+    <meta name="generator" content="Sven Walther" />
+    <link rel="Shortcut Icon" type="image/x-icon" href="../favicon.ico" />
+    <link href="<?php echo "../themes/".$config['theme']."/stylesheet.css"; ?>" rel="stylesheet" type="text/css" />
+    <?php
+      if($config['snarlEnabled']) {
+    ?>
+        <script src="snarl.js" type="text/javascript" charset="utf-8"></script>
+        <script type="text/javascript">
+          uploadStarted = new Snarl.NotificationType("Upload started", true);
+          Snarl.register("SiFiEx", [uploadStarted]);
 
+          function uploadStartFunc() {
+          uploadStarted = new Snarl.NotificationType("Upload started", true);
+          Snarl.register("SiFiEx", [uploadStarted]);
+          Snarl.notify(uploadStarted, 'Upload started', 'Uplod of file has been started', Snarl.Priority.VeryLow, false);
+          }
+        </script>
+    <?php
+      }
+    ?>
+  </head>
+  <body>
+<?php
 if ($HTTP_POST_VARS['r00t']){
-  writeFile($config['fileDir'].'.htaccess', $HTTP_POST_VARS['hta']);
+  writeFile("../".$config['fileDir'].'.htaccess', $HTTP_POST_VARS['hta']);
 }
 if ($HTTP_POST_VARS['createFolder']){
   mkdir($config['fileDir'].$HTTP_POST_VARS['createFolderName']);
@@ -22,9 +51,9 @@ if ($HTTP_POST_VARS['createFolder']){
 
   writeFile($config['fileDir'].$HTTP_POST_VARS['createFolderName'].'/.htaccess', $htaccess);
 }
-$handle=opendir($config['fileDir']);
+$handle=opendir("../".$config['fileDir']);
 while ($dir = readdir ($handle)) {
-  if ($dir != "." && $dir != ".."  && filetype($config['fileDir'] . $dir) == "dir") {
+  if ($dir != "." && $dir != ".."  && filetype("../".$config['fileDir'] . $dir) == "dir") {
     if ($HTTP_POST_VARS[$dir]){
 
 	  writeFile($config['fileDir'].$dir.'/.htaccess', $HTTP_POST_VARS['hta'.$dir]);
@@ -57,14 +86,14 @@ while ($dir = readdir ($handle)) {
 closedir($handle);
 
 echo '<form method="post" action="htedit.php"><table>';
-$handle=opendir($config['fileDir']);
+$handle=opendir("../".$config['fileDir']);
 echo '<tr><td colspan="3">root directory</td></tr>';
-$htaccess = file_get_contents($config['fileDir'].'.htaccess');
+$htaccess = file_get_contents("../".$config['fileDir'].'.htaccess');
 echo '<tr><td colspan="3"><textarea name="hta" cols="50" rows="10" wrap="off" readonly>'.$htaccess.'</textarea></td>';
 echo '<tr><td colspan="3"><input type="submit" name="r00t" value="Change root folder" disabled/></td></tr>';
 
 while ($dir = readdir ($handle)) {
-  if ($dir != "." && $dir != ".."  && filetype($config['fileDir'] . $dir) == "dir") {
+  if ($dir != "." && $dir != ".."  && filetype("../".$config['fileDir'] . $dir) == "dir") {
     echo '<tr><td colspan="3">'.$dir.'</td></tr>';
     $htaccess = @file_get_contents($config['fileDir'].$dir.'/.htaccess');
 	echo '<tr><td><textarea name="hta'.$dir.'" cols="50" rows="10" wrap="off" readonly>'.$htaccess.'</textarea></td>';
@@ -88,3 +117,5 @@ echo "</table></form>";
 closedir($handle);
 
 ?>
+  </body>
+</html>

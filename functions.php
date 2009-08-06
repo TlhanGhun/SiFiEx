@@ -236,7 +236,7 @@ function generateLanguagesDropdown() {
   $languages=array();
   $handle=opendir('languageFiles/');
   while ($language = readdir ($handle)) {
-    if ($language != "." && $language != ".." && $language != ".svn") {
+    if ($language != "." && $language != ".." && $language != ".svn" && $theme != ".git") {
       array_push($languages, $language);
     }
   }
@@ -254,7 +254,7 @@ function generateThemesDropdown() {
   $themes=array();
   $handle=opendir('themes/');
   while ($theme = readdir ($handle)) {
-    if ($theme != "." && $theme != ".." && $theme != ".svn") {
+    if ($theme != "." && $theme != ".." && $theme != ".svn" && $theme != ".git") {
       array_push($themes, $theme);
     }
   }
