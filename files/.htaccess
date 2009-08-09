@@ -5,4 +5,4 @@ php_value post_max_size 100M
 
 IndexIgnore .htaccess , .htpasswd , .. , .
 
-IndexIgnore default
+IndexIgnore Standard

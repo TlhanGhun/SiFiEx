@@ -8,6 +8,13 @@
     'cancel'  => "Cancel",
     'help'    => "Help",
 
+    ### username and password dialods
+    'username' => "Username",
+    'password'  => "Password",
+    'passwordAgain' => "Password again",
+    'addUser' => "Add User",
+    'passwordMismatch'  => "The passwords to not match",
+
     ### Upload of file
     'unExpandUpload'	=> "Cancel upload",
     'uploadExpand'	=> "Upload new file",
@@ -57,5 +64,11 @@
     'mailSuccess'	=> "Mail has been successfully sent to ", 
     'mailError'		=> "Error sending e-mail",
 
+    ### folder support
+    'uploadChooseFolder'  => "Please choose a folder",
+    'folderSettings'      => "Folder preferences",
+    'changeFolder'        => "Change folder",
+    'newFolderName'       => "New Folder Name",
+    'createFolder'        => "Create folder",
   )
 ?>

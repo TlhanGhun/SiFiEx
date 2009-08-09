@@ -1,6 +1,39 @@
 ***************************
+0.6 (the "Rob-Release")
+ - Added sub folder support (thanks to Rob)
+ - Added Fluid/Yip! notifications support (see http://fluidapp.com/developer/ and http://www.yipyip.com/)
+ - tweaked configuration of interface (e. g. hiding language and/or theme dropdown)
+
+new entries in configuration
+ o notificationsEnableFluid: enable Fluid support
+ o showThemeSelector: show theme dropdown?
+ o showLanguageSelector: show language dropdown?
+ o showAdminLink: show link to admin page?
+ o currentDir: gives you the file system path to the folder your current script is running
+
+changed styles in themes:
+ o #listOfFiles is now .listOfFiles as multiple tables for multiple folders can be shown
+
+new styles in themes:
+ o h2.folderName: heading folder name above a table of files
+ o h3.folderIsRestricted: message that the following table lists files which are password protected
+
+new entries for translation:
+ o folderAccessRestricted: info that the following folder has restricted access
+ o uploadChooseFolder: info text in upload form to choose a folder
+ o folderSettings: Heading on folder administration page
+ o changeFolder: change folder
+ o newFolderName: name for new folder
+ o createFolder: create folder
+
+***************************
 0.5
- - Added Snarl (http://www.fullphat.net) notifications
+ - Added Snarl (http://www.fullphat.net) notifications using its JSON API
+
+new entries in configuration
+ o notificationsEnableSnarl: enable Snarl support
+ o appName: displayed name of the app
+ o appDesc: short description / slogan
 
 ***************************
 0.4.1

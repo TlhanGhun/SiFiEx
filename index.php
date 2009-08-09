@@ -1,81 +1,10 @@
 <?php
 session_start();
 require_once("functions.php");
-
-if(!file_exists("config.php")) {
-  require("setup/setup.php");
-  if ($HTTP_POST_VARS['doFtpChanges']) {
-    $tryUsingFtp = new setup;
-    $tryUsingFtp->writeHtmlHeader();
-    $tryUsingFtp->writeUsingFtp($HTTP_POST_VARS);
-  } else {
-    $initialSetup = new setup;
-    $initialSetup->writeHtmlHeader();
-    $initialSetup->writeAnalysis();
-  }
-}
+checkConfig();
 require_once("config.php");
-
-if(!is_writable($config['fileDir'])) {
-  require("setup/setup.php");
-  if ($HTTP_POST_VARS['doFtpChanges']) {
-    $tryUsingFtp = new setup;
-    $tryUsingFtp->writeHtmlHeader();
-    $tryUsingFtp->writeUsingFtp($HTTP_POST_VARS);
-  } else {
-    $initialSetup = new setup;
-    $initialSetup->writeHtmlHeader();
-    $initialSetup->writeAnalysis();
-  }
-}
-
-if(!file_exists(".htaccess") || !file_exists(".htpasswd")) {
-  echo "Set the Administrator Username and Password";
-  if(isset($HTTP_POST_VARS['submit'])){
-    if ( isset($_POST['user']) && isset($_POST['password1'])){
-      if( $_POST['password1'] == $_POST['password2'] ){
-        $user = $_POST['user'];
-        $password1 = $_POST['password1'];
-        $htpasswd_text = "\n".$user .":".crypt($password1,CRYPT_STD_DES);
-
-        writeFile('.htpasswd', $htpasswd_text);
-
-        $htaccess = "IndexIgnore .htaccess , .htpasswd , .. , . \n";
-        $htaccess .= 'AuthName "Admin Access"';
-        $htaccess .= "\n"."AuthType Basic \n";
-        $htaccess .= "AuthUserFile ".$_SERVER['DOCUMENT_ROOT']."/".$config['installDir'].".htpasswd \n";
-        $htaccess .= "Require valid-user";
-
-        writeFile('.htaccess', $htaccess);
-      } else {
-        echo "<p><hr></p>";
-        echo "<b>Passwords do not match</b>";
-        echo "<p><hr></p>";
-      }
-    }
-  } else {
-    echo '<form method="post" action="index.php"><table>';
-    echo '<tr><td>Username:</td><td><INPUT TYPE="TEXT" NAME="user"></td></tr>';
-    echo '<tr><td>Password:</td><td><INPUT TYPE="PASSWORD" NAME="password1"></td></tr>';
-    echo '<tr><td>Password again:</td><td><INPUT TYPE="PASSWORD" NAME="password2"></td></tr>';
-    echo '<tr><td><center><INPUT type=submit name="submit" VALUE="Set User / Pass">';
-    echo '</center></td></tr>';
-    echo '</table><form>';
-  }
-}
-
-if ($HTTP_POST_VARS['changeLanguage']) {
-  $_SESSION['language'] = $HTTP_POST_VARS['language'];
-}
-if ($HTTP_POST_VARS['changeTheme']) {
-  $_SESSION['theme'] = $HTTP_POST_VARS['theme'];
-}
-if ($_SESSION['language']) {
-  $config['language'] =$_SESSION['language']; 
-}
-if ($_SESSION['theme']) {
-  $config['theme'] =$_SESSION['theme']; 
-}
+checkMainFolderPermissions();
+initialize();
 require_once("languageFiles/".$config['language']."/texts.php");
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
@@ -83,41 +12,49 @@ require_once("languageFiles/".$config['language']."/texts.php");
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de">
   <head>
     <meta http-equiv="content-type" content="text/html; charset=iso-8859-1" />
-    <title>SiFiEx - Simple File Exchange <?php echo $config['version']; ?></title>
+    <title><?php echo $config['appName']." - ".$config['appDesc']." ".$config['version']; ?></title>
     <meta name="generator" content="Sven Walther" />
     <link rel="Shortcut Icon" type="image/x-icon" href="favicon.ico" />
     <link href="<?php echo "themes/".$config['theme']."/stylesheet.css"; ?>" rel="stylesheet" type="text/css" />
     <?php
-      if($config['snarlEnabled']) {
+      if($config['notificationsEnableSnarl']) {
     ?>
         <script src="snarl.js" type="text/javascript" charset="utf-8"></script>
-        <script type="text/javascript">
-          uploadStarted = new Snarl.NotificationType("Upload started", true);
-          Snarl.register("SiFiEx", [uploadStarted]);
-          
-          function uploadStartFunc() {
-          uploadStarted = new Snarl.NotificationType("Upload started", true);
-          Snarl.register("SiFiEx", [uploadStarted]);
-          Snarl.notify(uploadStarted, 'Upload started', 'Uplod of file has been started', Snarl.Priority.VeryLow, false);
-          }
-
+        <script type="text/javascript" charset="utf-8">
+        function uploadStartFunc() {
+          myClass = new Snarl.NotificationType('Upload started', true);
+          Snarl.register('SiFiEx', [myClass]);
+          Snarl.notify(myClass, 'Upload started', 'Upload has started', Snarl.Priority.VeryLow, false);
+        }
         </script>
-        
     <?php
       }
+      $iconPath = "";
     ?>
   </head>
   <body>
+    <?php checkAdminPassword(); ?>
     <div id="logoHeader">
-      <h1><a href="">Simple File Exchange <?php echo $config['version']; ?></a></h1>
+      <h1><a href=""><?php echo $config['appDesc']." ".$config['version']; ?></a></h1>
     </div>
     <div id="helperFunctions">
       <?php 
-        generateLanguagesDropdown();
-        generateThemesDropdown();
+        if($config['showLanguageSelector']) {
+          generateLanguagesDropdown();
+        }
+        if($config['showThemeSelector']) {
+          generateThemesDropdown();
+        }
       ?>
-      <a href="help.php" target="_blank" id="helpLink"><?php echo $lang['help']; ?></a>
-	  <a href="htedit.php" target="_blank" id="helpLink">Admin (use with caution)</a>
+      <a href="help.php" id="helpLink"><?php echo $lang['help']; ?></a>
+      <?php
+	    if($config['showAdminLink']) {
+	    ?>
+	      <br />
+        <a href="admin/folders.php" id="adminLink">Admininistration</a>
+      <?php
+      }
+      ?>
     </div>
     <form id="expandUploadForm" action="<?php echo $PHP_SELF; ?>" method="post">
       <?php if ($HTTP_POST_VARS['expandUploadSubmit']) {
@@ -130,6 +67,7 @@ require_once("languageFiles/".$config['language']."/texts.php");
     <div id="messageBox">
 <?php
 if ($firstStart) {
+  showNotification("firstStart", $config['appName'],$lang['firstStart'],$iconPath);
   writeSuccess($lang['firstStart']);
 }
 ?>
@@ -138,18 +76,7 @@ if ($firstStart) {
       </div>
 <?php
 if ($HTTP_POST_VARS['doUpload'] != "") {
-
-      if($config['snarlEnabled']) {
-    ?>
-            <script type="text/javascript">
-         // uploadStarted = new Snarl.NotificationType("Upload started", true);
-         // Snarl.register("SiFiEx", [uploadStarted]);
-         // Snarl.notify(uploadStarted, 'Upload started', 'Uplod of file has been started', Snarl.Priority.VeryLow, false);
-          </script>
-        </script>
-    <?php
-      }
-
+  showNotification("Upload started", $config['appName'], $lang['uploading'], $iconPath);
   writeOngoing($lang['uploading']);
   flush();
   $fileName = $_FILES['uploadPic']['name'];
@@ -160,19 +87,10 @@ if ($HTTP_POST_VARS['doUpload'] != "") {
     $fileName = "htaccess-Leading dot erased by SiFiEx";
   }
   if (!move_uploaded_file($_FILES['uploadPic']['tmp_name'], $config['fileDir'].$HTTP_POST_VARS['chooseFolder']."/".$fileName)) {
+    showNotification("Upload error", $config['appName'], $lang['uploadError'], $iconPath);
     writeWarning($lang['uploadError']);
   } else {
-  
-        if($config['snarlEnabled']) {
-    ?>
-            <script type="text/javascript">
-          uploadFinished = new Snarl.NotificationType("Upload finished", true);
-          Snarl.register("SiFiEx", [uploadFinished]);
-          Snarl.notify(uploadStarted, 'Upload finished', 'Uplod of file has been finished succesfully', Snarl.Priority.VeryLow, false);
-          </script>
-        </script>
-    <?php
-      }
+    showNotification("Upload finished", $config['appName'], $lang['uploadSuccess'], $iconPath);
     writeSuccess($lang['uploadSuccess']);
     
     if ($HTTP_POST_VARS['informMail'] != "") {
@@ -225,8 +143,10 @@ if ($HTTP_POST_VARS['renameButton'] != "") {
 if ($HTTP_POST_VARS['rename'] != "") {
     writeOngoing($lang['renamingFile']);
     if (renameFile($HTTP_POST_VARS['name'], $HTTP_POST_VARS['newName'])) {
+      showNotification("File has been renamed", $config['appName'], $lang['renameDone'], $iconPath);
       writeSuccess($lang['renameDone']);
     } else {
+      showNotification("File rename error", $config['appName'], $lang['renameError'], $iconPath);
       writeWarning($lang['renameError']);
     }
 }
@@ -244,8 +164,10 @@ if ($HTTP_POST_VARS['delete'] == $lang['yes']) {
   //$deleteFile=ereg_replace("\/","",$HTTP_POST_VARS['name']);
   //$deleteFile=(ereg_replace("\.\.","",$deleteFile));
   if (@unlink($config['fileDir'].$deleteFile)) {
+    showNotification("File has been deleted", $config['appName'], $lang['deleteSuccess'], $iconPath);
     writeSuccess($lang['deleteSuccess']);
   } else {
+    showNotification("Delete failed", $config['appName'], $lang['deleteError'], $iconPath);
     writeWarning($lang['deleteError']);
   }
 }
@@ -262,7 +184,7 @@ if ($HTTP_POST_VARS['delete'] == $lang['yes']) {
           <li id="chooseFile"><?php echo $lang['uploadChooseFile']; ?>
             <br />
             <input type="file" name="uploadPic" size="4" /></li>
-			<li id="chooseFolder">Choose Folder for upload<br />
+			<li id="chooseFolder"><?php echo $lang['uploadChooseFolder']; ?><br />
 		  <?php
 		  $handle=opendir($config['fileDir']);
 		  echo '<select name="chooseFolder">';
@@ -317,16 +239,22 @@ if ($file != "." && $file != ".."  && filetype($config['fileDir'] . $file) == "d
   }
 }
 closedir($handle);
-//natcasesort($images);
-//$images = array_reverse($images);
-//array_push($folders, $images);
+natcasesort($images);
+$images = array_reverse($images);
+array_push($folders, $images);
 echo '<div id="files">';
 while ((list(, $images) = each ($folders)) && (list(, $file) = each ($folders2))){
 ?>
-      <table id="listOfFiles">
+    <h2 class="folderName"><?php echo $file ;?></h2>
+    <?php
+    if(checkFolderPermissions($config['fileDir']."/".$file)) {
+      echo "<h3 class=\"folderIsRestricted\">".$lang["folderAccessRestricted"]."</h3>\n";
+    }
+    ?>
+      <table class="listOfFiles">
         <tr>
           <th>
-            <?php echo $file ;?>
+            <?php echo $lang['listName']; ?> <a href="?sort=NameUp">&uarr;</a> <a href="?sort=NameDown">&darr;</a>
           </th>
           <th>
 	    <?php echo $lang['listDate']; ?>
@@ -396,7 +324,7 @@ while (list( ,$key) = each ($images)) {
 
 
     <div id="footer">
-      <p>SiFiEx is free software (see <a href="LICENSE.txt">license</a>) by Sven Walther (modified by Rob Tabberer) - this is version <?php echo $config['version']; ?></p>
+      <p>SiFiEx is free software (see <a href="LICENSE.txt">license</a>) by Sven Walther - this is version <?php echo $config['version']; ?></p>
     </div>
   </body>
 </html>

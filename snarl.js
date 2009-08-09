@@ -39,7 +39,7 @@ Snarl = function(){
 
 		register : function(applicationName, notificationTypes){
 			Snarl.init();
-			if(snarlIsRunning){
+		//	if(snarlIsRunning){
 			    appName = applicationName;
 				var data = {"action" : REGISTRATION,
 							"applicationName" : applicationName,
@@ -47,12 +47,12 @@ Snarl = function(){
 				var json = Snarl.utils.json.stringify(data);
 				send(json);
 				isRegistered = true;
-			}
+		//	}
 		},
 
 		notify : function(notificationType, title, description, priority, sticky){
 			Snarl.init();
-			if(snarlIsRunning && isRegistered){
+			if(isRegistered){
 				var data = {"action" : NOTIFICATION,
 							"applicationName" : appName,
 							"notificationType" : notificationType,

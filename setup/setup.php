@@ -104,7 +104,7 @@ class setup {
     }
     if ($files) {
       echo "<h2>Changing permissions for the files-folder</h2>\n";
-      echo "<p>To be able to upload files to the webserver SiFiEx needs write permissions in the files folder. See below some example howto make this change.</p>\n";
+      echo "<p>To be able to upload files to the webserver SiFiEx needs write permissions in the files as well as the Standard folder. See below some example howto make this change.</p>\n";
       echo "<p>Background: On the webservers of mass hosters normally the user uploading files via FTP (the way you most probably installed SiFiEx) and the user running the PHP-scripts are not equal. So most of the times on such servers the PHP-script is not allowed to upload files to the files directory until you change those permissions to make this folder writable for the PHP-user.</p>\n";
     }
     echo "</div>\n";
@@ -141,9 +141,13 @@ class setup {
     // Parameters: none
     // Return value: TRUE if PHP has write access to files folder, otherwise FALSE
     //
-    // Checks if files folder is writable to PHP
+    // Checks if files and the Standard folder are writable to PHP
     // *************************************************    
-    return(is_writable("./files/"));
+    $returnValue = false;
+    if(is_writable("./files/") && is_writable("./files/Standard/")) {
+        $returnValue = true;
+    }
+    return $returnValue;
   }
 
   function createFtpForm ($files, $config) {
@@ -193,6 +197,7 @@ class setup {
     if ($vars['files']) {
       echo "<li>Changing now the permissions for the files-folder: ";
       $this->outputSuccess(@ftp_chmod($ch, 0777, "./files"));
+      $this->outputSuccess(@ftp_chmod($ch, 0777, "./files/Standard"));
 
       echo "</li>\n";
     }
@@ -245,7 +250,7 @@ class setup {
     $filesDone = FALSE;
     $configDone = FALSE;
     if ($filesProblem) {
-      if (@chmod("./files", 0777)) { $filesDone = TRUE; };
+      if (@chmod("./files", 0777) && @chmod("./files/Standard", 0777)) { $filesDone = TRUE; };
     } else {
       $filesDone = TRUE;
     }

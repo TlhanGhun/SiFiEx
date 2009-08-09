@@ -1,18 +1,21 @@
 <?php
   $config = array (
-      # Language for SiFiEx to be displayed
-    'language' 		=> "en",
+    # software name
+    'appName'   => "SiFiEx",
+    'appDesc'   => "Simple File Exchange",
 
+    # Language for SiFiEx to be displayed
+    'language' 		=> "en",
     'theme'		=> "default",
+
+    'showThemeSelector' => true,
+    'showLanguageSelector' => true,
+    'showAdminLink' => true,
 
       # two examples for date format 
       # 'dateFormat' 		=> "F d Y H:i:s",
     'dateFormat' 		=> "Y-m-d H:i:s",
-	#path relative to the root of your website (use "" if it is installed in the root)
-	#'installDir'       => "",
-	'installDir'       => "sifiex/",
-	#path relative to the install directory (default is in the install directory)
-	#'fileDir           => "../files",
+	'currentDir'       => dirname($_SERVER["SCRIPT_FILENAME"]),
 	'fileDir'          => "files/",
 
       # maximum filename displayed in the list of files
@@ -27,14 +30,28 @@
     'mailInfoPassword'	=> TRUE,
 
     'hiddenSuffix' 	=> ".txt",
-    'showOngoing'		=> FALSE,
+    'showOngoing'		=> false,
+
+    # notification systems
+    'notificationsEnableSnarl'   => false,
+    'notificationsEnableFluid'   => true,
     
-    'enableSnarl'   => TRUE,
     
      # not yet implemented !
     'enableProgressBar' => FALSE,    
-
-    'version'		=> file_get_contents("version.txt")
   );
+
+if (file_exists("version.txt"))
+  {
+    $config['version'] = file_get_contents("version.txt");
+  }
+  else if (file_exists("../version.txt"))
+  {
+    $config['version'] = file_get_contents("../version.txt");
+  }
+  else
+  {
+    $config['version'] = "";
+}
 ?>
 

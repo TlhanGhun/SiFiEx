@@ -8,6 +8,13 @@
     'cancel' => "Abbrechen",
     'help'   => "Hilfe",
 
+    ### username and password dialods
+    'username' => "Nutzername",
+    'password'  => "Passwort",
+    'passwordAgain' => "Passwort Wiederholung",
+    'addUser' => "Nutzer hinzufügen",
+    'passwordMismatch'  => "Die Passwörter stimmen nicht überein",
+
     ### Upload of file
     'unExpandUpload'	=> "Abbrechen",
     'uploadExpand'	=> "Neue Datei hochladen",
@@ -55,7 +62,13 @@
     'mailPassword'	=> "Die Datei wurde mittels Nutzername und Passwort geschuetzt. Wenn Sie diese nicht kennen fragen SIe bitte die Person, welche Ihnen die Datei bereitgestellt hat.",
     'mailEnd'		=> "Gruesse von SiFiEx",
     'mailSuccess'		=> "E-Mail wurde erfolgreich gesendet an ",
-    'mailError'		=> "E-Mail konnte nicht gesendet",
+    'mailError'		=> "E-Mail konnte nicht gesendet werden",
 
+    ### folder support
+    'uploadChooseFolder'  => "Wählen Sie einen Ordner",
+    'folderSettings'      => "Ordner Einstellungen",
+    'changeFolder'        => "Ordner ändern",
+    'newFolderName'       => "Name für neuen Ordner",
+    'createFolder'        => "Ordner anlegen",
   )
 ?>

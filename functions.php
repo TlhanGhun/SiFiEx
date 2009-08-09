@@ -11,6 +11,7 @@ function displayFilename($filename, $length) {
     // Shortens the given filename if it is longer than $lenght
     // Will cut the the middle of the name and put ".." instead there 
     // *************************************************  
+  $filename = basename($filename);
 	if(($length < strlen($filename)) && $length) {
 		$leftPart = substr($filename, 0, intval($length/2-1));
 		$rightPart = substr($filename, intval(strlen($filename) - ($length/2 -1)));
@@ -80,6 +81,19 @@ function renameFile($oldName, $newName) {
   return rename("files/".$oldName, "files/".$newName);
 }
 
+function checkFolderPermissions($folderPath) {
+    // checks if the names folder has a .htpasswd-file with content
+  if(!file_exists($folderPath."/.htpasswd")) {
+    // no limitiation as no .htaccess available
+    return false;
+  }
+  if(file_get_contents($folderPath."/.htpasswd") == "") {
+    // no content
+    return false;
+  }
+  return true;
+}
+
 function sendMail($receipient, $fileName, $conf, $lang) {
     // *************************************************
     // function sendMail
@@ -107,9 +121,11 @@ function sendMail($receipient, $fileName, $conf, $lang) {
 	}
 	$body .= "\n\n".$lang['mailEnd'];
 	if (!mail($receipient, $lang['mailSubject'], $body, $header)) {
+	  showNotification("Mail send error", $config['appName'], $lang['mailError'], $iconPath);
 		writeWarning($lang['mailError']);
 		return FALSE;
 	} else {
+	  showNotification("Mail has been sent", $config['appName'], $lang['mailSuccess'].$receipient, $iconPath);
 		writeSuccess($lang['mailSuccess'].$receipient);
 		return TRUE;
 	}
@@ -266,6 +282,36 @@ function generateThemesDropdown() {
   echo "</form>\n";
 }
 
+function showNotification($class, $title, $text, $icon) {
+  global $config;
+  if($config['notificationsEnableSnarl']) {
+  ?>
+    <script type="text/javascript">
+      myClass = new Snarl.NotificationType('<?php echo $class; ?>', true);
+      Snarl.register("SiFiEx", [myClass]);
+      Snarl.notify(myClass, '<?php echo $title; ?>', '<?php echo $text; ?>', Snarl.Priority.VeryLow, false);
+    </script>
+  <?php
+  }
+
+  if($config['notificationsEnableFluid']) {
+  ?>
+    <script type="text/javascript">
+      try {
+        window.fluid.showGrowlNotification({
+        title: "<?php echo $title; ?>",
+        description: "<?php echo $text; ?>",
+        priority: 1,
+        sticky: false,
+        identifier: "<?php echo $class; ?>",
+        icon: "<?php echo $icon; ?>"
+        })
+     } catch (e) {}
+    </script>
+  <?php
+  }
+}
+
 function writeFile($filetobechanged, $data) {
   $filehandle = fopen($filetobechanged, 'w');
   fwrite($filehandle , stripslashes($data));
@@ -286,7 +332,7 @@ function makeHtfiles(){
         $htaccess = "IndexIgnore .htaccess , .htpasswd , .. , . \n";
         $htaccess .= 'AuthName "Admin Access"';
         $htaccess .= "\n"."AuthType Basic \n";
-        $htaccess .= "AuthUserFile ".$_SERVER['DOCUMENT_ROOT']."/".$config['installDir'].".htpasswd \n";
+        $htaccess .= "AuthUserFile ".$config['currentDir'].".htpasswd \n";
         $htaccess .= "Require valid-user";
 
         writeFile('/.htaccess', $htaccess);
@@ -304,5 +350,97 @@ function makeHtfiles(){
     echo '<tr><td><center><INPUT type=submit name="submit" VALUE="Set User / Pass">';
     echo '</center></td></tr>';
     echo '</table><form>';
+  }
+}
+
+function checkAdminPassword() {
+  global $HTTP_POST_VARS;
+  global $_POST;
+  global $config;
+  if(!file_exists("admin/.htaccess") || !file_exists("admin/.htpasswd")) {
+    echo "Set the Administrator Username and Password";
+    if(isset($HTTP_POST_VARS['submit'])){
+      if ( isset($_POST['user']) && isset($_POST['password1'])){
+        if( $_POST['password1'] == $_POST['password2'] ){
+          $user = $_POST['user'];
+          $password1 = $_POST['password1'];
+          $htpasswd_text = "\n".$user .":".crypt($password1,CRYPT_STD_DES);
+          writeFile('admin/.htpasswd', $htpasswd_text);
+          $htaccess = "IndexIgnore .htaccess , .htpasswd , .. , . \n";
+          $htaccess .= 'AuthName "Admin Access"';
+          $htaccess .= "\n"."AuthType Basic \n";
+          $htaccess .= "AuthUserFile ".$config['currentDir']."/admin/.htpasswd \n";
+          $htaccess .= "Require valid-user";
+
+          writeFile('admin/.htaccess', $htaccess);
+        } else {
+          echo "<hr />";
+          echo "<b>Passwords do not match</b>";
+          echo "<hr />";
+        }
+      }
+    } else {
+      echo '<form method="post" action="index.php"><table>';
+      echo '<tr><td>Username:</td><td><INPUT TYPE="TEXT" NAME="user"></td></tr>';
+      echo '<tr><td>Password:</td><td><INPUT TYPE="PASSWORD" NAME="password1"></td></tr>';
+      echo '<tr><td>Password again:</td><td><INPUT TYPE="PASSWORD" NAME="password2"></td></tr>';
+      // echo '<tr><td>Use this login also on the main page:</td><td><input type="PASSWORD" NAME="password2"></td></tr>';
+      echo '<tr><td><center><INPUT type=submit name="submit" VALUE="Set User / Pass">';
+      echo '</center></td></tr>';
+      echo '</table><form>';
+      die();
+    }
+
+  }
+
+}
+
+function checkConfig() {
+  if(!file_exists("config.php")) {
+    require("setup/setup.php");
+    if ($HTTP_POST_VARS['doFtpChanges']) {
+      $tryUsingFtp = new setup;
+      $tryUsingFtp->writeHtmlHeader();
+      $tryUsingFtp->writeUsingFtp($HTTP_POST_VARS);
+    } else {
+      $initialSetup = new setup;
+      $initialSetup->writeHtmlHeader();
+      $initialSetup->writeAnalysis();
+    }
+  }
+}
+
+function checkMainFolderPermissions() {
+  global $config;
+  global $HTTP_POST_VARS;
+  if(!is_writable($config['fileDir'])) {
+    require("setup/setup.php");
+    if ($HTTP_POST_VARS['doFtpChanges']) {
+      $tryUsingFtp = new setup;
+      $tryUsingFtp->writeHtmlHeader();
+      $tryUsingFtp->writeUsingFtp($HTTP_POST_VARS);
+    } else {
+      $initialSetup = new setup;
+      $initialSetup->writeHtmlHeader();
+      $initialSetup->writeAnalysis();
+    }
+  }
+}
+
+function initialize() {
+  global $HTTP_POST_VARS;
+  global $_SESSION;
+  global $config;
+  if ($HTTP_POST_VARS['changeLanguage']) {
+    $_SESSION['language'] = $HTTP_POST_VARS['language'];
+  }
+  if ($HTTP_POST_VARS['changeTheme']) {
+    $_SESSION['theme'] = $HTTP_POST_VARS['theme'];
+  }
+  if ($_SESSION['language']) {
+    $config['language'] =$_SESSION['language'];
+  }
+  if ($_SESSION['theme']) {
+    $config['theme'] =$_SESSION['theme'];
   }
 }
